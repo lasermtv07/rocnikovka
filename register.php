@@ -5,6 +5,10 @@
         <title>register</title>
     </head>
     <body>
+        <?php 
+            require 'comm.php';
+            head();
+        ?>
         <h1>register</h1>
         <form method=POST>
             <table>
@@ -91,12 +95,13 @@
         
         var_dump($_POST);
         
-        $nick=addslashes(htmlspecialchars($nick));
+        $nick=htmlspecialchars($nick);
         $pass=hash('sha256',$pass);
-        $email=addslashes(htmlspecialchars($email));
         $gender=mb_strtolower($gender);
 
-        $conn->query("INSERT INTO `accounts` (`username`, `password`,`date_of_birth`,`picture`,`description`,`banner`,`email`,`gender`) VALUES ('$nick','$pass','$bdate','','','','$email','$gender')");
+        $stmt=$conn->prepare("INSERT INTO `accounts` (`username`, `password`,`date_of_birth`,`picture`,`description`,`banner`,`email`,`gender`) VALUES (?,?,?,'','','',?,?)");
+        $stmt->bind_param("sssss",$nick,$pass,$bdate,$email,$gender);
+        $stmt->execute();
 
 
         //header('location: '.$_SERVER['SCRIPT_NAME']);
