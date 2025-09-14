@@ -42,19 +42,7 @@
                 die();
             }
 
-            //pripoj mysql
-            $conn = new mysqli('localhost', 'misa', '');
-            if ($conn->connect_error){
-                echo "<b>Database error!</b>";
-                die();
-            }
-            try {
-                $conn->query('use chmelarmi22');
-            }
-            catch(e) {
-                echo "<b>Error loading database</b>";
-                die();
-            }
+            $conn=connect();
 
             //escapuj vstupy
             $nick=addslashes(htmlspecialchars($nick));
@@ -71,6 +59,17 @@
             }
             session_start();
             $_SESSION["nick"]=$nick;
+
+            //nastav userId
+            $stmt=$conn->prepare("SELECT `id` FROM `accounts` WHERE `username` = ?");
+            $stmt->bind_param("s",$nick);
+            $stmt->execute();
+            $result=$stmt->get_result();
+            $r=$result->fetch_assoc();
+            $_SESSION["id"]=$r["id"];
+
+
+
             header('location: .');
 
         }

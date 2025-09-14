@@ -36,17 +36,7 @@
         $gender=$_POST['gender'];
 
         //pripoj mysql
-        $conn = new mysqli('localhost', 'misa', '');
-        if ($conn->connect_error){
-            echo "<b>Database error!</b>";
-            die();
-        }
-        try {
-            $conn->query('use chmelarmi22');
-        }
-        catch(e) {
-            echo "<b>Error loading database</b>";
-        }
+        $conn = connect();
 
         //validuj uziv. jm.
         if(!preg_match("/^[A-Za-z0-9ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž ]+$/",$nick) || mb_strlen($nick)<3){
@@ -93,7 +83,6 @@
             die();
         }
         
-        var_dump($_POST);
         
         $nick=htmlspecialchars($nick);
         $pass=hash('sha256',$pass);
