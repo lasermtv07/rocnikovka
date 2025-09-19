@@ -56,7 +56,7 @@
             echo "<br>";
         $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC");
         while($i = $stmt->fetch_assoc()){
-            echo "<b>".$i['username']."</b> - ".$i['postTime'];
+            echo "<b><a href=/profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
             echo "<p>".$i['text']."</p><hr>";
         }
     ?>

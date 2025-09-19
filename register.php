@@ -43,6 +43,7 @@
             echo "<b>Error: illegal username</b>";
             die();
         }
+        //TODO: fix
         $users=$conn->query('SELECT * FROM `accounts` WHERE `username` = \''.$nick.'\'');
         if(mysqli_num_rows($users)!=0){
             echo "<b>Error: User already exists!</b>";

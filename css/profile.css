@@ -1,0 +1,16 @@
+#banner {
+height: 105px;
+background-color: aqua;
+}
+#pfp {
+    position: relative;
+    top:5px;
+    left: 5px;
+    border: 2px solid black;
+    float: left;   
+}
+#banner h1{
+    position: relative;
+    left:15px;
+    top:25%;
+}
