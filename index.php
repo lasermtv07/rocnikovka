@@ -59,6 +59,7 @@
             echo "<b><a href=/profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
             echo "<p>".$i['text']."</p><hr>";
         }
+        foot();
     ?>
 </body>
 </html>
