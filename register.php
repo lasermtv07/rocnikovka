@@ -103,6 +103,13 @@
             foot();
             die();
         }
+
+        //zkontroluj jestli uzivatel uz neni prihlasenej
+        if(isset($_SESSION["id"]) && $_SESSION["id"]!=""){
+            echo "<b>Error: already logged in as user!</b>";
+            foot();
+            die();
+        }
         
         
         $nick=htmlspecialchars($nick);
@@ -113,7 +120,7 @@
         $stmt->bind_param("sssss",$nick,$pass,$bdate,$email,$gender);
         $stmt->execute();
 
-        //header('location: '.$_SERVER['SCRIPT_NAME']);
+        header('location: login.php');
     }
 
         foot();

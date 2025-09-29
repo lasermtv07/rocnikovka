@@ -45,8 +45,20 @@
     <div id="banner">
         <img id=pfp src="<?php echo $picture?>" alt="pfp" width="90" height="90"/>
         <h1><?php echo $nick; ?></h1>
+        <span style=float:right>
+<?php
+if($user==$_SESSION["id"]){
+    echo "<a href=\"profileConfig.php\" style=color:$textColor>profile</a>";
+}
+?>
+        </span>
     </div>
     <p><?php echo $description; ?></p>
-    <hr />
+    <hr /><hr />
+    <?php
+        listTweets($user);
+        foot();
+    ?>
+
 </body>
 </html>

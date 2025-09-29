@@ -18,6 +18,10 @@
         $result=$stmt->get_result();
         $r=$result->fetch_assoc();
         #var_dump($r);
+        if(!isset($_SESSION["id"])){
+            echo "<b>Error: must be logged in!</b>";
+            die();
+        }
     ?>
     <form method=POST >
         <b>Nickname: </b><input type="text" name="nick" value="<?php echo $r['username']; ?>"/>
@@ -34,9 +38,16 @@
 if(isset($_POST["s"])){
     $nick=htmlspecialchars($_POST["nick"]);
     $desc=htmlspecialchars($_POST["desc"]);
-    //TODO: add color validation
+    //TODO: add validation
     $banner=$_POST["banner"];
     $textColor=$_POST["textColor"];
+    
+    //validuj prazdnej nick
+    if(strlen($nick)==0 || $nick==""){
+        echo "<b>Error: nick cannot be empty!</b>";
+        foot();
+        die();
+    }
 
     $stmt=$conn->prepare('UPDATE `accounts` SET `username` = ?, `description` = ?, `banner` = ?, `textColor`=? WHERE `id` = ?');
     $stmt->bind_param("ssssi",$nick,$desc,$banner,$textColor,$id);
@@ -47,6 +58,7 @@ if(isset($_POST["s"])){
     
 
 }    
+foot();
 ?>
 </body>
 </html>

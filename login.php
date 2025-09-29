@@ -43,7 +43,6 @@
             }
 
             $conn=connect();
-
             //escapuj vstupy
             $nick=addslashes(htmlspecialchars($nick));
             $hashedPass=hash('sha256',$pass);
@@ -55,9 +54,20 @@
             $users=$stmt->get_result();
             if(mysqli_num_rows($users)==0){
                 echo "<b>Error: wrong username/password</b>";
+                foot();
                 die();
             }
             session_start();
+
+            //check login
+            if(isset($_SESSION["id"]) && $_SESSION["id"]!=""){
+                echo "<b>Error:already logged in!</b>";
+                foot();
+                die();
+            }
+
+
+
             $_SESSION["nick"]=$nick;
 
             //nastav userId
