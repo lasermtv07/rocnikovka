@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Document</title>
 </head>
 <body>
@@ -16,11 +17,12 @@
         }
 
     ?>
-   <h1>home</h1>
-    <form method=POST>
-        <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
-        <input type=submit name=s />
-    </form>
+    <main>
+        <h1>home</h1>
+        <form method=POST>
+            <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
+            <input type=submit name=s />
+        </form>
     <?php 
 
 
@@ -57,5 +59,6 @@
 
         foot();
     ?>
+    </main>
 </body>
 </html>

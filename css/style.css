@@ -1,0 +1,42 @@
+/*pouzivam gruvbox*/
+body{
+    color: #fbf1c7 !important;
+    background-color: #282828;
+    margin: 0;
+}
+main {
+    width: 80%;
+    margin:auto;
+    background-color: #3c3836;
+    padding: 10px;
+    height: 95vh;
+}
+
+a {
+color: #fbf1c7 !important;
+}
+
+main h1 {
+    margin-top: 0;
+}
+
+#head {
+    margin: 0;
+    background-color: #504945;
+    padding: 0 20px;
+}
+#head h2 {
+    display: inline;
+}
+#head span {
+    font-size: 1.5em;
+}
+#head a {
+    padding-left: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    main {
+        width: 100%;
+    }
+}

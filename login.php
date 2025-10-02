@@ -11,6 +11,7 @@
             require 'comm.php';
             head();
         ?>
+    <main>
     <h1>login</h1>
     <form method=POST>
         <table>
@@ -83,6 +84,8 @@
             header('location: .');
 
         }
+        foot();
     ?>
+    </main>
 </body>
 </html>

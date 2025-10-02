@@ -12,8 +12,11 @@
     <title>profile</title>
 </head>
 <body>
+    <?php 
+   head(); 
+    ?>
+    <main>
 <?php 
-    head();
     $user=$_GET["user"];
 
     //nacti data
@@ -59,6 +62,6 @@ if($user==$_SESSION["id"]){
         listTweets($user);
         foot();
     ?>
-
+    </main>
 </body>
 </html>

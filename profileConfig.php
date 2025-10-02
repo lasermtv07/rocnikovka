@@ -23,6 +23,8 @@
             die();
         }
     ?>
+    <main>
+    <h1>profile config</h1>
     <form method=POST >
         <b>Nickname: </b><input type="text" name="nick" value="<?php echo $r['username']; ?>"/>
         <br><b>Description: </b><br>
@@ -60,5 +62,7 @@ if(isset($_POST["s"])){
 }    
 foot();
 ?>
+
+</main>
 </body>
 </html>

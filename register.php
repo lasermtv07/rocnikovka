@@ -21,6 +21,7 @@
                 $option=$_POST["gender"];
             }
         ?>
+        <main>
         <h1>register</h1>
         <form method=POST>
             <table>
@@ -125,5 +126,6 @@
 
         foot();
 ?>
+    </main>
     </body>
 </html>
