@@ -35,12 +35,36 @@
         echo "<div id=head>";
         echo '<h2>小鳥</h2><span>';
         echo '<a href="index.php">Home</a> <a href="login.php">Login</a> <a href="register.php">Register</a>';
+        if(in_array("?",str_split($_SERVER['REQUEST_URI'])))
+            echo "<a href=".$_SERVER['REQUEST_URI']."&";
+        else
+            echo "<a href=".$_SERVER['REQUEST_URI']."?";
+
+        if(isset($_COOKIE["light"]))
+            echo "change>dark</a>";
+        else
+            echo "change>light</a>";
         $nick=(isset($_SESSION["nick"]))?$_SESSION["nick"]:"anon";
         echo "<a href=\"index.php/?logout\" style=float:right >$nick";
         if(isAdmin($_SESSION["id"]))
             echo "<b style=color:red > [ADMIN]</b>";
         echo "</a>";
         echo "</span></div>";
+        if(isset($_COOKIE["light"])){
+            echo "<link rel=stylesheet href=\"css/light.css\" />";
+        }
+        if(isset($_GET["change"])){
+            if(!isset($_COOKIE["light"])){
+                setcookie("light","1",time()+3600*24*30);
+            }
+            else {
+                setcookie("light",!$_COOKIE["light"],time()+3600*24*30);
+            }
+            $out_url=str_replace("?change","",$_SERVER['REQUEST_URI']);
+            $out_url=str_replace("&change","",$out_url);
+            header('location:'.$out_url);
+        }
+
     }
 
     function foot(){
@@ -64,7 +88,7 @@
 
         while($i = $stmt->fetch_assoc()){
             session_start();
-            echo "<b><a href=/profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
+            echo "<b><a href=profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
             if(isAdmin($_SESSION["id"]) || $_SESSION["id"]==$i['authorID'])
                 echo "<a style=color:red;float:right href=delete.php?id=".$i['id'].">Delete</a>";
             echo "<p>".$i['text']."</p><hr>";

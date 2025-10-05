@@ -1,19 +1,25 @@
 /*pouzivam gruvbox*/
+* {
+    --body-bg: #282828;
+    --fg: #fbf1c7;
+    --head-bg: #504945;
+    --bg: #3c3836;
+}
 body{
-    color: #fbf1c7 !important;
-    background-color: #282828;
+    color:var(--fg)  !important;
+    background-color: var(--body-bg);
     margin: 0;
 }
 main {
     width: 80%;
     margin:auto;
-    background-color: #3c3836;
+    background-color: var(--bg);
     padding: 10px;
     height: 95vh;
 }
 
 a {
-color: #fbf1c7 !important;
+color: var(--fg) !important;
 }
 
 main h1 {
@@ -22,7 +28,7 @@ main h1 {
 
 #head {
     margin: 0;
-    background-color: #504945;
+    background-color: var(--head-bg);
     padding: 0 20px;
 }
 #head h2 {

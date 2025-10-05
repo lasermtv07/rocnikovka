@@ -13,7 +13,7 @@
         session_start();
         if(isset($_GET["logout"])){
             session_destroy();
-            header('location: .');
+            header('location:'.explode("/?",$_SERVER['REQUEST_URI'])[0]);
         }
 
     ?>
