@@ -4,6 +4,8 @@
     --fg: #fbf1c7;
     --head-bg: #504945;
     --bg: #3c3836;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 body{
     color:var(--fg)  !important;

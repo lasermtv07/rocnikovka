@@ -22,6 +22,11 @@
         <form method=POST>
             <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
             <input type=submit name=s />
+            <?php 
+                if(isAdmin($_SESSION['id'])){
+                    echo "<a href=swears.php >Change swears</a>";
+                }
+            ?>
         </form>
     <?php 
 
@@ -40,10 +45,21 @@
                 echo "<b>Error: post cannot be empty!</b>";
                 $cont=false;
             }
-            if(mb_strlen($tweet)>255 && $cont){
+            if(mb_strlen($tweet)>255){
                 echo "<b>Error: post cannot be longer than 256 characters!</b>";
                 $cont=false;
             }
+            $stmt=$conn->query('SELECT string FROM swears');
+            while($i=$stmt->fetch_assoc()){
+                if(!$cont)
+                    continue;
+                //TODO: zlepsit validaci
+                if(preg_match('/'.$i['string'].'/i',$tweet)){
+                    echo "<b>Error: cannot contain swears.</b>";
+                    $cont=false;
+                }
+            }
+
             //posli post
             $tweet=htmlspecialchars($tweet);
             if($cont){
