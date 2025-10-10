@@ -19,6 +19,7 @@
     ?>
     <main>
         <h1>home</h1>
+        <b><?php echo $_SESSION['nick']; ?></b>
         <form method=POST>
             <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
             <input type=submit name=s />

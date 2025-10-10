@@ -13,7 +13,7 @@ body{
     margin: 0;
 }
 main {
-    width: 80%;
+    width: 40%;
     margin:auto;
     background-color: var(--bg);
     padding: 10px;
@@ -29,22 +29,27 @@ main h1 {
 }
 
 #head {
+    float: left;
+    width: 29%;
     margin: 0;
-    background-color: var(--head-bg);
-    padding: 0 20px;
+    background-color: var(--body-bg);
 }
 #head h2 {
-    display: inline;
+
+    margin:0;
+    padding: 10px 0;
 }
-#head span {
-    font-size: 1.5em;
-}
-#head a {
-    padding-left: 20px;
+#head h2:hover {
+    background-color: var(--head-bg);
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 750px) {
     main {
+        width: 98%;
+        margin: 0 !important;
+    }
+    #head {
         width: 100%;
+        display: block;
     }
 }

@@ -1,6 +1,23 @@
 #banner {
 height: 105px;
 background-color: aqua;
+display: inline-block;
+width: 99%;
+}
+#banner span {
+    position: relative;
+    top:30px;
+    left: 20px;
+    margin: 0;
+    font-size: 2em;
+}
+
+#banner a {
+    position: relative;
+    top:30px;
+    float: right;
+    margin: 0;
+    font-size: 1.5em;
 }
 #pfp {
     position: relative;
@@ -13,4 +30,8 @@ background-color: aqua;
     position: relative;
     left:15px;
     top:25%;
+}
+
+#head {
+    display: block !important;
 }

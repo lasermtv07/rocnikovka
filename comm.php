@@ -33,8 +33,12 @@
         session_start();
         echo '<link rel=stylesheet href=css/style.css />';
         echo "<div id=head>";
-        echo '<h2>小鳥</h2><span>';
-        echo '<a href="index.php">Home</a> <a href="login.php">Login</a> <a href="register.php">Register</a>';
+        echo '<center>';
+        echo '<h1>小鳥</h1><span>';
+        echo '<h2><a href="index.php">Home</a></h2> <h2><a href="login.php">Login</a></h2> <h2><a href="register.php">Register</a></h2>';
+
+        echo "<h2><a href=\"index.php/?logout\" >Logout</a></h2>";
+        echo '<h2>';
         if(in_array("?",str_split($_SERVER['REQUEST_URI'])))
             echo "<a href=".$_SERVER['REQUEST_URI']."&";
         else
@@ -44,12 +48,9 @@
             echo "change>dark</a>";
         else
             echo "change>light</a>";
+        echo '</h2>';
         $nick=(isset($_SESSION["nick"]))?$_SESSION["nick"]:"anon";
-        echo "<a href=\"index.php/?logout\" style=float:right >$nick";
-        if(isAdmin($_SESSION["id"]))
-            echo "<b style=color:red > [ADMIN]</b>";
-        echo "</a>";
-        echo "</span></div>";
+        echo "</span>";
         if(isset($_COOKIE["light"])){
             echo "<link rel=stylesheet href=\"css/light.css\" />";
         }
@@ -64,6 +65,7 @@
             $out_url=str_replace("&change","",$out_url);
             header('location:'.$out_url);
         }
+        echo "</center></div>";
 
     }
 
