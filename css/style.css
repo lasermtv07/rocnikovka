@@ -17,7 +17,7 @@ main {
     margin:auto;
     background-color: var(--bg);
     padding: 10px;
-    height: 95vh;
+    min-height: 95vh;
 }
 
 a {
@@ -42,6 +42,11 @@ main h1 {
 #head h2:hover {
     background-color: var(--head-bg);
 }
+.post_img {
+    max-width: 250px;
+    border: 2px solid var(--fg);
+}
+
 
 @media only screen and (max-width: 750px) {
     main {

@@ -93,7 +93,11 @@
             echo "<b><a href=profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
             if(isAdmin($_SESSION["id"]) || $_SESSION["id"]==$i['authorID'])
                 echo "<a style=color:red;float:right href=delete.php?id=".$i['id'].">Delete</a>";
-            echo "<p>".$i['text']."</p><hr>";
+            echo "<p>".$i['text']."</p>";
+
+            if($i["picture"])
+                echo "<img src=images/".$i["picture"]." class=post_img />";
+            echo "<hr>";
         }
     }
 ?>

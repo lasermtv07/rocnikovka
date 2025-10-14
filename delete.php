@@ -7,11 +7,15 @@ $conn=connect();
 if(!isset($_SESSION["id"]))
     header('location: index.php');
 
-$stmt=$conn->prepare("SELECT authorID FROM tweets WHERE id = ?");
+$stmt=$conn->prepare("SELECT * FROM tweets WHERE id = ?");
 $stmt->bind_param("i",$_GET["id"]);
 $stmt->execute();
 $users=$stmt->get_result();
-$id=$users->fetch_assoc()["authorID"];
+$assoc=$users->fetch_assoc();
+$id=$assoc["authorID"];
+$pic=$assoc["picture"];
+
+var_dump($pic);
 
 if(!isAdmin($_SESSION["id"]) && $_SESSION["id"]!=$id){
     header('location: index.php');
@@ -23,9 +27,9 @@ if(!isAdmin($_SESSION["id"]) && $_SESSION["id"]!=$id){
 if(!isset($_GET["id"]))
     header('location: index.php');
 
-
 try {
     $conn->query('DELETE FROM tweets WHERE id = '.$_GET["id"]);
+    unlink('images/'.$pic);
 } catch (Exception $e){
     echo "error";
 }

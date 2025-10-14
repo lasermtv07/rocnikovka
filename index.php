@@ -20,9 +20,9 @@
     <main>
         <h1>home</h1>
         <b><?php echo $_SESSION['nick']; ?></b>
-        <form method=POST>
+        <form method=POST enctype="multipart/form-data">
             <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
-            <input type=submit name=s />
+            <input type=submit name=s /> <input type=file name="image" />
             <?php 
                 if(isAdmin($_SESSION['id'])){
                     echo "<a href=swears.php >Change swears</a>";
@@ -30,7 +30,6 @@
             ?>
         </form>
     <?php 
-
 
         $conn=connect();
         if(isset($_POST["s"])){
@@ -61,11 +60,47 @@
                 }
             }
 
+            $file=$_FILES["image"];
+            $fname="";
+
+            //chyba uploadu (napr. config serveru..)
+            if($file["tmp_name"]==""){
+                echo "<b>Error: couldn't upload image</b>";
+                $cont=false;
+            }
+            if($file['name']!="" && $cont){
+                //najdi nejvyse postaveny obrazek
+                $maxNo=0;
+                foreach(scandir('images') as $i){
+                    if($i!='.' && $i!='..'){
+                        $j=explode(".",$i)[0];
+                        if((int)$j>$maxNo)
+                            $maxNo=$j;
+                    }
+                }
+                $maxNo++;
+
+                $ext=explode(".",$_FILES["image"]["name"])[1]; //pripona
+                $check=getimagesize($file["tmp_name"]);
+                if(!$check){ //vyhodi chybu kdyz neni obrazek
+                    echo "<b>Error: invalid uploaded file!</b>";
+                    $cont=false;
+                }
+                elseif($file["size"]>500000){ //chzba kdyz moc velkej
+                    echo "<b>Error: file too large</b>";
+                    $cont=false;
+                }
+                else {
+                    $fname=$maxNo.".".$ext;
+                    move_uploaded_file($file["tmp_name"],"images/".$fname);
+                }
+            }
+
             //posli post
             $tweet=htmlspecialchars($tweet);
             if($cont){
-                $stmt=$conn->prepare('INSERT INTO `tweets` (authorID,`text`,`postTime`) VALUES (?,?,CURRENT_TIMESTAMP)');
-                $stmt->bind_param("is",$_SESSION["id"],$tweet);
+                $stmt=$conn->prepare('INSERT INTO `tweets` (authorID,`text`,picture,`postTime`) VALUES (?,?,?,CURRENT_TIMESTAMP)');
+                $stmt->bind_param("iss",$_SESSION["id"],$tweet,$fname);
                 $stmt->execute();
 
                 header('location: .');
