@@ -34,6 +34,7 @@ try {
     echo "error";
 }
 
+$conn->query("DELETE FROM likes WHERE tweetID=".$_GET["id"]);
 
     header('location: index.php');
 ?>

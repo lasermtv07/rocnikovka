@@ -91,12 +91,28 @@
         while($i = $stmt->fetch_assoc()){
             session_start();
             echo "<b><a href=profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
+            //mazani
             if(isAdmin($_SESSION["id"]) || $_SESSION["id"]==$i['authorID'])
                 echo "<a style=color:red;float:right href=delete.php?id=".$i['id'].">Delete</a>";
             echo "<p>".$i['text']."</p>";
-
+            //obrazek
             if($i["picture"])
                 echo "<img src=images/".$i["picture"]." class=post_img />";
+            //liky
+            $likeCount=mysqli_num_rows($conn->query("SELECT * FROM likes WHERE tweetID=".$i["id"]));
+            //barveni pro liky ktere udelil uzivatel
+            if(isset($_SESSION["id"])){
+                $r=$conn->query("SELECT * FROM likes WHERE userID=".$_SESSION["id"]." AND tweetID=".$i["id"]);
+                $count=mysqli_num_rows($r);
+            } else
+                $count=0;
+            $color="";
+            if($count>0)
+                $color=";color:var(--red) !important;";
+
+            echo "<br><span style=font-size:2em;padding:5%$color >";
+            echo "<a href=like.php?id=".$i['id']."&ret=$user class=like style=\"$color\">♥ <span style=\"color:var(--fg) !important;font-size:1.25rem;\">$likeCount</span></a></span>";
+            echo "aaa";
             echo "<hr>";
         }
     }

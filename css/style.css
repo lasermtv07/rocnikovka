@@ -4,6 +4,8 @@
     --fg: #fbf1c7;
     --head-bg: #504945;
     --bg: #3c3836;
+    --light-red:#fb4934;
+    --red:#cc241d;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -17,7 +19,7 @@ main {
     margin:auto;
     background-color: var(--bg);
     padding: 10px;
-    min-height: 95vh;
+    min-height: 100vh;
 }
 
 a {
@@ -45,6 +47,13 @@ main h1 {
 .post_img {
     max-width: 250px;
     border: 2px solid var(--fg);
+}
+
+.like {
+    text-decoration: none;
+}
+.like:hover {
+    color: var(--light-red) !important;
 }
 
 
