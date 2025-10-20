@@ -81,6 +81,7 @@
         echo "</div>";
     }
     function listTweets($user){
+        echo "<script src=js/like.js ></script>";
         $conn=connect();
         echo "<br>";
         if($user=="")
@@ -108,11 +109,11 @@
                 $count=0;
             $color="";
             if($count>0)
-                $color=";color:var(--red) !important;";
+                $color=" liked";
 
             echo "<br><span style=font-size:2em;padding:5%$color >";
-            echo "<a href=like.php?id=".$i['id']."&ret=$user class=like style=\"$color\">♥ <span style=\"color:var(--fg) !important;font-size:1.25rem;\">$likeCount</span></a></span>";
-            echo "aaa";
+            echo "<span id=\"lc".$i['id']."\"onclick=addLike('like.php?id=".$i['id']."&ret=$user',".$i["id"].",".((isset($_SESSION["id"]))?'true':'false').") class=\"like$color\">♥ <span id=l".$i["id"]. " style=\"color:var(--fg) !important;font-size:1.25rem;\">$likeCount</span></span></span>";
+            echo $_SESSION["id"];
             echo "<hr>";
         }
     }

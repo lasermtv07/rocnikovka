@@ -62,12 +62,14 @@
 
             $file=$_FILES["image"];
             $fname="";
-
+/*
             //chyba uploadu (napr. config serveru..)
+            var_dump($_FILES);
             if($file["tmp_name"]==""){
                 echo "<b>Error: couldn't upload image</b>";
                 $cont=false;
             }
+*/
             if($file['name']!="" && $cont){
                 //najdi nejvyse postaveny obrazek
                 $maxNo=0;

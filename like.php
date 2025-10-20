@@ -10,6 +10,26 @@ function ret($input){
         header('location:'.explode("like.php",$_SERVER['REQUEST_URI'])[0]."profile.php?user=$input");
 }
 
+
+$conn=connect();
+
+//API pro ziskani liku
+if(isset($_GET["likecount"])){
+    $likeCount=mysqli_num_rows($conn->query("SELECT * FROM likes WHERE tweetID=".$_GET["id"]));
+    echo $likeCount;
+    die();
+}
+//API pro ziskani liku likovanych SESSION uzivatelem
+if(isset($_GET["likecolor"])){
+    if(isset($_SESSION["id"])){
+        $r=$conn->query("SELECT * FROM likes WHERE userID=".$_SESSION["id"]." AND tweetID=".$_GET["id"]);
+        $count=mysqli_num_rows($r);
+    } else
+        $count=0;
+    echo $_SESSION["id"];
+    die();
+}
+
 var_dump($_GET);
 $postID=$_GET["id"];
 $returnPage=$_GET["ret"];
@@ -25,7 +45,6 @@ if(!isset($_SESSION["id"]) || $userID==NULL || $userID==""){
 
 
 //zjisti, jestli uz like u tweetu je nebo ne
-$conn=connect();
 $stmt=$conn->prepare('SELECT * FROM likes WHERE userID=? AND tweetID=?');
 $stmt->bind_param("ii",$userID,$postID);
 $stmt->execute();
