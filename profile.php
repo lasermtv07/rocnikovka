@@ -47,15 +47,26 @@
     echo "color: $textColor;</style>";
 ?>
 
-    <p id=banner >
+    <p id=banner style=width:100%;padding:0;margin:0;margin-bottom:5px; >
         <img id=pfp src="<?php echo $picture?>" alt="pfp" width="90" height="90"/>
-        <span><?php echo $nick; ?></span>
-        <?php 
-        if($user==$_SESSION["id"])
-            echo "<a href=\"profileConfig.php\" style=color:$textColor>profile</a>";
-        ?>
-</p>
 
+</p>
+    <?php echo "<h1>$nick</h1>";?>
+        <?php 
+        //spocitej followery
+            $conn=connect();
+            $stmt=$conn->prepare('SELECT count(*) FROM follows WHERE followedID=?');
+            $stmt->bind_param("i",$user);
+            $stmt->execute();
+            $stmt=$stmt->get_result();
+            $stmt=$stmt->fetch_assoc();
+        if($user==$_SESSION["id"])
+            echo "<a class=lr href=\"profileConfig.php\" style=color:$textColor>profile</a><a>follows: ";
+        else 
+            echo "<a class=lr href=\"follow.php?id=".$_GET['user']."\" style=color:$textColor>follow";
+
+            echo "(".$stmt["count(*)"].")</a>";
+        ?>
     <p><?php echo $description; ?></p>
     <hr /><hr />
     <?php

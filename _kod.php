@@ -7,9 +7,9 @@
 </head>
 <body>
     <?php 
-        foreach(scandir(__DIR__) as $i){
-            $str=file_get_contents(__DIR__.'/'.$i);
-            if($i!="secrets.php"){
+        foreach(glob(__DIR__.'/*',GLOB_BRACE) as $i){
+            $str=file_get_contents($i);
+            if(!preg_match("/secrets.php/",$i)){
                 echo "<b>$i</b><br>";
                 echo "<pre><code>".htmlspecialchars($str)."</code></pre>";
                 echo "<hr>";

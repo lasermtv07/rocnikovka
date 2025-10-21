@@ -12,9 +12,9 @@ width: 99%;
     font-size: 2em;
 }
 
-#banner a {
+.lr {
     position: relative;
-    top:30px;
+    top:-65px;
     float: right;
     margin: 0;
     font-size: 1.5em;
