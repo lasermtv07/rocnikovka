@@ -60,6 +60,57 @@ if(isset($_POST["s"])){
     
 
 }    
+?>
+<hr />
+<h2>change profile picture</h2>
+<p>To reset to default, click "Change" with no picture selected.</p>
+<form method=POST enctype="multipart/form-data">
+
+    <?php 
+    //ukaz pfp
+    $q=$conn->query("SELECT picture FROM accounts WHERE id = $id");
+    $q=$q->fetch_assoc()["picture"];
+    if($q=="")
+        $q="png/default.png";
+    echo "<img src=\"$q\" style=display:inline-block;float:left; width=90 height=90 />"
+    ?>
+    &nbsp;<input type=file name="image" style=margin-top:20px; ><br>
+    &nbsp;<input type=submit name="imageSub" style=margin-bottom:25px; value="Change" >
+</form>
+<?php
+if(isset($_POST["imageSub"])){
+    $file=$_FILES["image"];
+    //vymaz pfp, soubor nenalezen
+    if($file["tmp_name"]=="" && $file["name"]==""){
+        foreach(glob("png/$id.*",GLOB_BRACE) as $i){
+            unlink($i);
+        }
+        $conn->query("UPDATE accounts SET picture=\"\" WHERE id = $id");
+        header('location:'.$_SERVER['REQUEST_URI']);
+    }
+    elseif($file["tmp_name"]!=""){ //uploadni novej soubor
+        $check=getimagesize($file["tmp_name"]);
+        if($check !== false && $file["size"]<500001){
+            foreach(glob("png/$id.*",GLOB_BRACE) as $i){
+                unlink($i);
+            }
+            $ext=explode(".",$file["name"])[1]; //pripona
+            $fpath="png/$id.$ext";
+            move_uploaded_file($file["tmp_name"],$fpath);
+            $conn->query("UPDATE accounts SET picture=\"$fpath\" WHERE id = $id");
+    header('location:'.$_SERVER['REQUEST_URI']);
+        }
+        else {
+            echo "<b>Error: invalid size/type</b>";
+        }
+    }
+    else {
+        echo "<b>Error: invalid size/type</b>";
+    }
+}
+?>
+
+<?php
 foot();
 ?>
 
