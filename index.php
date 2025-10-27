@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kotori</title>
+    <style>
+        #feed h3{
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        #feed a {
+            text-decoration: none;
+        }
+        #feed .discoverH {
+            text-decoration: underline;
+        }
 
-    <title>Document</title>
+    </style>
 </head>
 <body>
     <?php
@@ -16,9 +29,36 @@
             header('location:'.explode("/?",$_SERVER['REQUEST_URI'])[0]);
         }
 
+        if(isset($_GET["follows"])){
+            setcookie('follows','1',time()+3600*24*30);
+        }
+        if(isset($_GET["disc"])){
+            setcookie('follows','',0);
+            unset($_COOKIE["follows"]);
+        }
+
     ?>
     <main>
-        <h1>home</h1>
+        <div id=feed >
+            <h3>
+                <?php
+                if(!(isset($_COOKIE["follows"])|| isset($_GET["follows"])))
+                    echo "<b class=discoverH>";
+                ?>
+                <a href=index.php?disc=1 >Discover</a>
+                <?php
+                if(!(isset($_COOKIE["follows"])|| isset($_GET["follows"])))
+                    echo "</b>";
+                if((isset($_COOKIE["follows"])|| isset($_GET["follows"])))
+                    echo "<b class=discoverH>";
+                ?>
+                <a href="index.php?follows=1" >Following</a>
+                <?php
+                if((isset($_COOKIE["follows"])|| isset($_GET["follows"])))
+                    echo "</b>";
+                ?>
+            </h3>
+        </div>
         <b><?php echo $_SESSION['nick']; ?></b>
         <form method=POST enctype="multipart/form-data">
             <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
@@ -105,11 +145,17 @@
                 $stmt->bind_param("iss",$_SESSION["id"],$tweet,$fname);
                 $stmt->execute();
 
-                header('location: .');
+                if(isset($_GET["follows"]) || isset($_COOKIE["follows"]))
+                    header('location: .?follows=1');
+                else
+                    header('location: .');
             }
         }
         //vypis existujici posty
-        listTweets("");
+        if(isset($_COOKIE["follows"]) || isset($_GET["follows"]))
+            listTweets($_SESSION["id"],true);
+        else
+            listTweets("");
 
         foot();
     ?>

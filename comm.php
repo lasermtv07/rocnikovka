@@ -80,15 +80,26 @@
         setcookie('visited',"true",time()+86400*30,"/");
         echo "</div>";
     }
-    function listTweets($user){
+    function listTweets($user,$changeFeed=false){
         echo "<script src=js/like.js ></script>";
         $conn=connect();
         echo "<br>";
-        if($user=="")
-            $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC");
-        else
-            $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user ORDER BY id DESC");
-
+        if(!$changeFeed || $user==NULL){
+            if($user=="") //pokud generuje homepage (discover)
+                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC");
+            else //pokud generuje stranku uzivatele
+                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user ORDER BY id DESC");
+        } else { // homepage ale following feed
+            $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user'");
+            $stmtText="($user";
+            while($i=$subStmt->fetch_assoc()){
+                $stmtText.=",";
+                $stmtText.=$i["followedID"];
+            }
+            $stmtText.=")";
+            $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id IN $stmtText ORDER BY id DESC");
+            
+        }
         while($i = $stmt->fetch_assoc()){
             session_start();
             echo "<b><a href=profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
@@ -117,4 +128,5 @@
             echo "<hr>";
         }
     }
+
 ?>
