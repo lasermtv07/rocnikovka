@@ -58,6 +58,11 @@
                 foot();
                 die();
             }
+            if($users->fetch_assoc()["suspension"]==1){
+                echo "<b>Error: account suspended</b>";
+                foot();
+                die();
+            }
             session_start();
 
             //check login

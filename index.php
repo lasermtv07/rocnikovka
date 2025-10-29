@@ -66,6 +66,7 @@
             <?php 
                 if(isAdmin($_SESSION['id'])){
                     echo "<a href=swears.php >Change swears</a>";
+                    echo " <a style=padding-left:50px href=suspensions.php >Suspend/delete users</a>";
                 }
             ?>
         </form>

@@ -19,16 +19,7 @@ if(isset($_GET["likecount"])){
     echo $likeCount;
     die();
 }
-//API pro ziskani liku likovanych SESSION uzivatelem
-if(isset($_GET["likecolor"])){
-    if(isset($_SESSION["id"])){
-        $r=$conn->query("SELECT * FROM likes WHERE userID=".$_SESSION["id"]." AND tweetID=".$_GET["id"]);
-        $count=mysqli_num_rows($r);
-    } else
-        $count=0;
-    echo $_SESSION["id"];
-    die();
-}
+
 
 var_dump($_GET);
 $postID=$_GET["id"];

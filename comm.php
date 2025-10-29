@@ -1,6 +1,4 @@
 <?php
-
-
     function connect(){
             require 'secrets.php';
             //pripoj mysql
@@ -67,6 +65,16 @@
         }
         echo "</center></div>";
 
+        //odhlas suspended/zabanovane uzivatele
+        if(isset($_SESSION["id"])){
+            $conn=connect();
+            $stmt=$conn->query("SELECT suspension FROM accounts WHERE id=".$_SESSION["id"]);
+            if(mysqli_num_rows($stmt)==0)
+                session_destroy();
+            elseif($stmt->fetch_assoc()["suspension"]==1)
+                session_destroy();
+        }
+
     }
 
     function foot(){
@@ -127,6 +135,48 @@
             echo $_SESSION["id"];
             echo "<hr>";
         }
+    }
+
+    function suspend($id){
+        //zkontroluj opravneni
+        if(!isAdmin($_SESSION["id"]))
+            return false;
+
+        $conn=connect();
+        //zkontroluj jestli obet neni admin a jestli je dobre id
+            $stmt=$conn->query("SELECT isAdmin FROM accounts WHERE id=$id");
+            if($stmt->fetch_assoc()["isAdmin"]==1)
+                return false;
+
+        $stmt=$conn->query("SELECT suspension FROM accounts WHERE id=$id");
+        if($stmt->fetch_assoc()["suspension"]==1)
+            $conn->query("UPDATE accounts SET suspension=0 WHERE id=$id");
+        else
+            $conn->query("UPDATE accounts SET suspension=1 WHERE id=$id");
+
+    }
+    //tady checky nedelam protoae tohle bude i ke smazani uctu uzivatelem samotnym
+    function deleteAcc($id){
+        $conn=connect();
+
+        //smaz fotky
+        $stmt=$conn->query("SELECT picture FROM tweets WHERE authorID=$id");
+        while($i=$stmt->fetch_assoc()){
+            if($i["picture"]!=NULL && $i["picture"]!='NULL')
+                unlink('images/'.$i['picture']);
+        }
+        //smaz vsechny tweety
+        $conn->query("DELETE FROM tweets WHERE authorID=$id");
+        //smaz vsechny likes
+        $conn->query("DELETE FROM likes WHERE userID=$id");
+        //smaz i follow relace
+        $conn->query("DELETE FROM follows WHERE followerID=$id or followedID=$id");
+        //smaz ucet
+        $conn->query("DELETE FROM accounts WHERE id=$id");
+
+        //odhlas pokud prihlasenej
+        if($_SESSION["id"]==$id)
+            session_destroy();
     }
 
 ?>
