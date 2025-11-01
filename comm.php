@@ -110,19 +110,40 @@
         }
         while($i = $stmt->fetch_assoc()){
             session_start();
-            echo "<b><a href=profile.php?user=".$i['authorID']." >".$i['username']."</a></b> - ".$i['postTime'];
+            $id=$i['id'];
+            $authorID=$i['authorID'];
+            $username=$i['username'];
+            $text=$i['text'];
+            $postTime=$i['postTime'];
+            $picture=$i['picture'];
+            $quote=$i['quote'];
+            
+            if($quote!=NULL){
+                echo "<b>Reposted by: $username</b><br>";
+                $st=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE tweets.id=$quote;");
+                $st=$st->fetch_assoc();
+                $id=$quote;
+                $authorID=$st['authorID'];
+                $username=$st['username'];
+                $text=$st['text'];
+                $postTime=$st['postTime'];
+                $picture=$st['picture'];
+                $quote=$st['quote'];
+            }
+
+            echo "<b><a href=profile.php?user=".$authorID." >".$username."</a></b> - ".$postTime;
             //mazani
-            if(isAdmin($_SESSION["id"]) || $_SESSION["id"]==$i['authorID'])
-                echo "<a style=color:red;float:right href=delete.php?id=".$i['id'].">Delete</a>";
-            echo "<p>".$i['text']."</p>";
+            if(isAdmin($_SESSION["id"]) || $_SESSION["id"]==$authorID)
+                echo "<a style=color:red;float:right href=delete.php?id=".$id.">Delete</a>";
+            echo "<p>".$text."</p>";
             //obrazek
-            if($i["picture"])
-                echo "<img src=images/".$i["picture"]." class=post_img />";
+            if($picture)
+                echo "<img src=images/".$picture." class=post_img />";
             //liky
-            $likeCount=mysqli_num_rows($conn->query("SELECT * FROM likes WHERE tweetID=".$i["id"]));
+            $likeCount=mysqli_num_rows($conn->query("SELECT * FROM likes WHERE tweetID=".$id));
             //barveni pro liky ktere udelil uzivatel
             if(isset($_SESSION["id"])){
-                $r=$conn->query("SELECT * FROM likes WHERE userID=".$_SESSION["id"]." AND tweetID=".$i["id"]);
+                $r=$conn->query("SELECT * FROM likes WHERE userID=".$_SESSION["id"]." AND tweetID=".$id);
                 $count=mysqli_num_rows($r);
             } else
                 $count=0;
@@ -130,9 +151,23 @@
             if($count>0)
                 $color=" liked";
 
-            echo "<br><span style=font-size:2em;padding:5%$color >";
-            echo "<span id=\"lc".$i['id']."\"onclick=addLike('like.php?id=".$i['id']."&ret=$user',".$i["id"].",".((isset($_SESSION["id"]))?'true':'false').") class=\"like$color\">♥ <span id=l".$i["id"]. " style=\"color:var(--fg) !important;font-size:1.25rem;\">$likeCount</span></span></span>";
-            echo $_SESSION["id"];
+            echo "<div class=buttons><span class=a><span style=font-size:2em;$color >";
+            echo "<span id=\"lc".$id."\"onclick=addLike('like.php?id=".$id."&ret=$user',".$id.",".((isset($_SESSION["id"]))?'true':'false').") class=\"like$color\">♥ <span id=l".$id. " style=\"color:var(--fg) !important;font-size:1.25rem;\">$likeCount</span></span></span>";
+            echo "</span>";
+            //reposty (quoty)
+            $st=$conn->query("SELECT COUNT(*) FROM tweets WHERE quote=".$id);
+            $repostCount=$st->fetch_assoc()["COUNT(*)"];
+
+            $green="";
+            if(isset($_SESSION["id"])){
+                $st=$conn->query("SELECT COUNT(*) FROM tweets WHERE quote=$id AND authorID=".$_SESSION["id"]);
+                if($st->fetch_assoc()['COUNT(*)']!=0)
+                    $green="green";
+            }
+
+            echo "<span class=b><span onclick=addRepost($id,".((isset($_SESSION["id"]))?1:0).") >";
+            echo "<span id=rc$id class=\"$green\" >".file_get_contents('ico/repost.svg')."</span>";
+            echo "<span id=r$id style=font-size:1.5em class=up >$repostCount</span></span></span></div>";
             echo "<hr>";
         }
     }

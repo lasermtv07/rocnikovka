@@ -6,6 +6,7 @@
     --bg: #3c3836;
     --light-red:#fb4934;
     --red:#cc241d;
+    --aqua:#8ec87c; 
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -60,7 +61,7 @@ main h1 {
     color:var(--red) !important;
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 900px) {
     main {
         width: 98%;
         margin: 0 !important;
@@ -69,4 +70,39 @@ main h1 {
         width: 100%;
         display: block;
     }
+}
+
+#repost {
+    width:2em !important;
+    position: relative;
+}
+#repost * {
+    stroke: var(--fg) !important;
+}
+#repost #path496,#repost #path496-6 {
+    fill: var(--fg) !important;
+}
+
+.green #repost * {
+    stroke: var(--aqua) !important;
+}
+.green #repost #path496,.green #repost #path496-6 {
+    fill: var(--aqua) !important;
+}
+
+#repost:hover * {
+    stroke: var(--light-red) !important;
+}
+#repost:hover #path496,#repost:hover #path496-6 {
+    fill: var(--light-red) !important;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around !important;
+}
+.buttons .b .up {
+    position: relative;
+    top: -12px;
+    left: 10px;
 }

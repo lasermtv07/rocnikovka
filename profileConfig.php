@@ -32,17 +32,12 @@
 <?php echo $r["description"]; ?>
 </textarea>
 
-        <b>Banner color:</b><input type="color" name="banner" value="<?php echo $r["banner"]; ?>" /><br>
-        <b>Title color:</b><input type="color" name="textColor" value="<?php echo $r["textColor"]; ?>" /><br>
         <input type="submit" name="s" />
     </form>
 <?php 
 if(isset($_POST["s"])){
     $nick=htmlspecialchars($_POST["nick"]);
     $desc=htmlspecialchars($_POST["desc"]);
-    //TODO: add validation
-    $banner=$_POST["banner"];
-    $textColor=$_POST["textColor"];
     
     //validuj prazdnej nick
     if(strlen($nick)==0 || $nick==""){
@@ -51,8 +46,8 @@ if(isset($_POST["s"])){
         die();
     }
 
-    $stmt=$conn->prepare('UPDATE `accounts` SET `username` = ?, `description` = ?, `banner` = ?, `textColor`=? WHERE `id` = ?');
-    $stmt->bind_param("ssssi",$nick,$desc,$banner,$textColor,$id);
+    $stmt=$conn->prepare('UPDATE `accounts` SET `username` = ?, `description` = ? WHERE `id` = ?');
+    $stmt->bind_param("ssi",$nick,$desc,$id);
     $stmt->execute();
 
     header('location:'.$_SERVER['REQUEST_URI']);
@@ -71,7 +66,7 @@ if(isset($_POST["s"])){
     $q=$conn->query("SELECT picture FROM accounts WHERE id = $id");
     $q=$q->fetch_assoc()["picture"];
     if($q=="")
-        $q="png/default.png";
+        $q="pfp/default.png";
     echo "<img src=\"$q\" style=display:inline-block;float:left; width=90 height=90 />"
     ?>
     &nbsp;<input type=file name="image" style=margin-top:20px; ><br>
@@ -82,7 +77,7 @@ if(isset($_POST["imageSub"])){
     $file=$_FILES["image"];
     //vymaz pfp, soubor nenalezen
     if($file["tmp_name"]=="" && $file["name"]==""){
-        foreach(glob("png/$id.*",GLOB_BRACE) as $i){
+        foreach(glob("pfp/$id.*",GLOB_BRACE) as $i){
             unlink($i);
         }
         $conn->query("UPDATE accounts SET picture=\"\" WHERE id = $id");
@@ -91,11 +86,11 @@ if(isset($_POST["imageSub"])){
     elseif($file["tmp_name"]!=""){ //uploadni novej soubor
         $check=getimagesize($file["tmp_name"]);
         if($check !== false && $file["size"]<500001){
-            foreach(glob("png/$id.*",GLOB_BRACE) as $i){
+            foreach(glob("pfp/$id.*",GLOB_BRACE) as $i){
                 unlink($i);
             }
             $ext=explode(".",$file["name"])[1]; //pripona
-            $fpath="png/$id.$ext";
+            $fpath="pfp/$id.$ext";
             move_uploaded_file($file["tmp_name"],$fpath);
             $conn->query("UPDATE accounts SET picture=\"$fpath\" WHERE id = $id");
     header('location:'.$_SERVER['REQUEST_URI']);

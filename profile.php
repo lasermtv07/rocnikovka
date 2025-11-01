@@ -28,7 +28,7 @@
     $r=$results->fetch_assoc();
     
     $nick="anon";
-    $picture="png/default.png";
+    $picture="pfp/default.png";
     $description="";
     $banner="#b4b4b4ff";
     $textColor='black';
@@ -47,10 +47,8 @@
     echo "color: $textColor;</style>";
 ?>
 
-    <p id=banner style=width:100%;padding:0;margin:0;margin-bottom:5px; >
         <img id=pfp src="<?php echo $picture?>" alt="pfp" width="90" height="90"/>
 
-</p>
     <?php echo "<h1>$nick</h1>";?>
         <?php 
         //spocitej followery
@@ -61,11 +59,11 @@
             $stmt=$stmt->get_result();
             $stmt=$stmt->fetch_assoc();
         if($user==$_SESSION["id"])
-            echo "<a class=lr href=\"profileConfig.php\" style=color:$textColor>profile</a><a>follows: ";
+            echo "<span class=lr> <a href=\"profileConfig.php\" style=color:$textColor>profile</a> <a>follows: ";
         else 
-            echo "<a class=lr href=\"follow.php?id=".$_GET['user']."\" style=color:$textColor>follow";
+            echo "<span class=lr> <a href=\"follow.php?id=".$_GET['user']."\" style=color:$textColor>follow";
 
-            echo "(".$stmt["count(*)"].")</a>";
+            echo "(".$stmt["count(*)"].")</a></span><br><br>";
         ?>
     <p><?php echo $description; ?></p>
     <hr /><hr />

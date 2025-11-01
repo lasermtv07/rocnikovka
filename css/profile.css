@@ -13,11 +13,12 @@ width: 99%;
 }
 
 .lr {
-    position: relative;
-    top:-65px;
+
     float: right;
     margin: 0;
     font-size: 1.5em;
+    position: relative;
+    top:30px;
 }
 #pfp {
     position: relative;
@@ -26,12 +27,21 @@ width: 99%;
     border: 2px solid black;
     float: left;   
 }
-#banner h1{
+ h1{
     position: relative;
-    left:15px;
-    top:25%;
+    left:25px;
+    top:30px;
+    display: inline-block;
 }
 
 #head {
     display: block !important;
+}
+img {
+    background-color: gray;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-around !important;
 }
