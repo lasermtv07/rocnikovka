@@ -106,3 +106,8 @@ main h1 {
     top: -12px;
     left: 10px;
 }
+
+#pager {
+    display: flex;
+    justify-content: space-around;
+}

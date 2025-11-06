@@ -88,27 +88,53 @@
         setcookie('visited',"true",time()+86400*30,"/");
         echo "</div>";
     }
-    function listTweets($user,$changeFeed=false){
-        echo "<script src=js/like.js ></script>";
+    function listTweets($user,$changeFeed=false,$pagingLimit=10){
         $conn=connect();
+        //cookie pro pagovani
+        $pageId=(is_null($_GET["user"]))?"":$_GET["user"];
+        if(!isset($_COOKIE["page".$pageId]))
+            setcookie("page".$pageId,"1",time()+3600);
+
+        $limitStart=max(($_COOKIE["page".$pageId]-1)*$pagingLimit,0);
+        $limitString="LIMIT ".$limitStart.",".($limitStart+$pagingLimit);
+
+        //paguj dopredu
+        if(isset($_GET["pageNext"])){
+            setcookie("page".$pageId,$_COOKIE["page".$pageId]+1,time()+3600);
+            $newUrl=str_replace("?pageNext","",$_SERVER["REQUEST_URI"]);
+            $newUrl=str_replace("&pageNext","",$newUrl);
+            header('location: '.$newUrl);
+        }
+        //paguj dozadu
+        if(isset($_GET["pagePrev"])){
+            if($_COOKIE["page".$pageId]>1)
+                setcookie("page".$pageId,$_COOKIE["page".$pageId]-1,time()+3600);
+            $newUrl=str_replace("?pagePrev","",$_SERVER["REQUEST_URI"]);
+            $newUrl=str_replace("&pagePrev","",$newUrl);
+            header('location: '.$newUrl);
+        }
+
+        echo "<script src=js/like.js ></script>";
         echo "<br>";
         if(!$changeFeed || $user==NULL){
             if($user=="") //pokud generuje homepage (discover)
-                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC $limitString");
             else //pokud generuje stranku uzivatele
-                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user ORDER BY id DESC");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user ORDER BY id DESC $limitString");
         } else { // homepage ale following feed
-            $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user'");
+            $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user' $limitString");
             $stmtText="($user";
             while($i=$subStmt->fetch_assoc()){
                 $stmtText.=",";
                 $stmtText.=$i["followedID"];
             }
             $stmtText.=")";
-            $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id IN $stmtText ORDER BY id DESC");
+            $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id IN $stmtText ORDER BY id DESC $limitString");
             
         }
+        $pageCount=0;
         while($i = $stmt->fetch_assoc()){
+            $pageCount++;
             session_start();
             $id=$i['id'];
             $authorID=$i['authorID'];
@@ -170,6 +196,27 @@
             echo "<span id=r$id style=font-size:1.5em class=up >$repostCount</span></span></span></div>";
             echo "<hr>";
         }
+
+        //UI pro pager
+        $linkNext=$_SERVER['REQUEST_URI'];
+        if($pageCount>0){
+            if(str_contains($linkNext,"?") && !str_contains($linkNext,"&pageNext"))
+                $linkNext.="&pageNext";
+            else if(!str_contains($linkNext,"&pageNext"))
+                $linkNext.="?pageNext";
+        }
+
+        $linkPrev=$_SERVER['REQUEST_URI'];
+        if(str_contains($linkPrev,"?") && !str_contains($linkPrev,"&pagePrev"))
+            $linkPrev.="&pagePrev";
+        else if(!str_contains($linkPrev,"&pagePrev"))
+            $linkPrev.="?pagePrev";
+
+        echo "<div id=pager>";
+        echo "<h3><a href=\"$linkPrev\">&lt;</a></h3>";
+        echo "<h3> ".((is_null($_COOKIE["page".$pageId]))?"1":$_COOKIE["page".$pageId])." </h3>";
+        echo "<h3><a href=\"$linkNext\">&gt;</a></h3>";
+        echo "</div>";
     }
 
     function suspend($id){
