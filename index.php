@@ -62,7 +62,7 @@
         <b><?php echo $_SESSION['nick']; ?></b>
         <form method=POST enctype="multipart/form-data">
             <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
-            <input type=submit name=s /> <input type=file name="image" />
+            <input type=submit name=s /> <input type=file name="image" /><br />
             <?php 
                 if(isAdmin($_SESSION['id'])){
                     echo "<a href=swears.php >Change swears</a>";

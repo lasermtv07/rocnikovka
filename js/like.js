@@ -4,12 +4,24 @@ function addLike($url,$id,$isOn){
         credentials: "same-origin"
     });
     //updatuj ty pocty liku
-    fetch('like.php?likecount&id='+$id)
+    /*fetch('like.php?likecount&id='+$id)
         .then(response => response.text())
         .then(body => {for(let a of document.querySelectorAll('[id=l'+$id+']')){
             a.innerHTML=body
         }}
-    )
+    )*/
+    for(let a of document.querySelectorAll('[id=l'+$id+']')){
+        let original=a.innerHTML;
+        for(let b of document.querySelectorAll('[id=lc'+$id+']')){
+            if(a.innerHTML==original){
+                if(b.classList.contains('liked') || !$isOn)
+                    a.innerHTML=parseInt(a.innerHTML)-1;
+                else
+                    a.innerHTML=parseInt(a.innerHTML)+1;
+            }
+        }
+    }
+
     //oprav barvy
     for(let a of document.querySelectorAll('[id=lc'+$id+']')){
         if(a.classList.contains('liked') || !$isOn)
@@ -30,12 +42,24 @@ function addRepost(id,loggedOn){
     });
 
     //updatuj ty pocty repostu
+    /*
     fetch(url+"&getCount")
         .then(response => response.text())
         .then(body => {for(let a of document.querySelectorAll('[id=r'+id+']')){
             a.innerHTML=body
         }}
-    )
+    )*/
+    for(let a of document.querySelectorAll('[id=r'+id+']')){
+        let original=a.innerHTML;
+        for(let b of document.querySelectorAll('[id=rc'+id+']')){
+            if(a.innerHTML==original){
+                if(b.classList.contains('green') || !loggedOn)
+                    a.innerHTML=parseInt(a.innerHTML)-1;
+                else
+                    a.innerHTML=parseInt(a.innerHTML)+1;
+            }
+        }
+    }
 
     //oprav barvy
     for(let a of document.querySelectorAll('[id=rc'+id+']')){
