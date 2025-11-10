@@ -193,7 +193,9 @@
 
             echo "<span class=b><span onclick=addRepost($id,".((isset($_SESSION["id"]))?1:0).") >";
             echo "<span id=rc$id class=\"$green\" >".file_get_contents('ico/repost.svg')."</span>";
-            echo "<span id=r$id style=font-size:1.5em class=up >$repostCount</span></span></span></div>";
+            echo "<span id=r$id style=font-size:1.5em class=up >$repostCount</span></span></span>";
+            echo "<span><a href=\"comments.php?tweet=".$id."\">comments</a></span>";
+            echo "</div>";
             echo "<hr>";
         }
 

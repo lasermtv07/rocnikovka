@@ -13,8 +13,8 @@ function addLike($url,$id,$isOn){
     for(let a of document.querySelectorAll('[id=l'+$id+']')){
         let original=a.innerHTML;
         for(let b of document.querySelectorAll('[id=lc'+$id+']')){
-            if(a.innerHTML==original){
-                if(b.classList.contains('liked') || !$isOn)
+            if(a.innerHTML==original && $isOn){
+                if(b.classList.contains('liked'))
                     a.innerHTML=parseInt(a.innerHTML)-1;
                 else
                     a.innerHTML=parseInt(a.innerHTML)+1;
