@@ -46,6 +46,7 @@ head();
             <textarea name="text" style=width:99%;height:100px;></textarea>
             <input type=submit name=s />
         </form>
+        <script src=js/like.js ></script>
         <?php
         if(isset($_POST["s"]) && isset($_SESSION["id"])){
             $cont=true;

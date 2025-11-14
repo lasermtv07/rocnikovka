@@ -91,13 +91,13 @@
                 echo "<b>Error: post cannot be longer than 256 characters!</b>";
                 $cont=false;
             }
-            $stmt=$conn->query('SELECT string FROM swears');
+            $stmt=$conn->query('select string from swears');
             while($i=$stmt->fetch_assoc()){
                 if(!$cont)
                     continue;
-                //TODO: zlepsit validaci
+                //todo: zlepsit validaci
                 if(preg_match('/'.$i['string'].'/i',$tweet)){
-                    echo "<b>Error: cannot contain swears.</b>";
+                    echo "<b>error: cannot contain swears.</b>";
                     $cont=false;
                 }
             }

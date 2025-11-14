@@ -6,7 +6,8 @@
     --bg: #3c3836;
     --light-red:#fb4934;
     --red:#cc241d;
-    --aqua:#8ec87c; 
+    --aqua:#8ec87c;
+    --textarea: #7c6f64;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -110,4 +111,39 @@ main h1 {
 #pager {
     display: flex;
     justify-content: space-around;
+}
+
+textarea,input[type=text],input[type=password] {
+    background-color: var(--textarea);
+    color: var(--fg);
+    font-size:1.05rem;
+    font-weight: bold;
+    border: 2px solid var(--fg);
+}
+
+button,input[type=submit],input[type=file]::file-selector-button {
+    margin: 10px 0;
+    padding: 2px 5px;
+    background-color: var(--textarea);
+    font-weight: bold;
+    color: var(--fg);
+    border: 2px solid var(--fg);
+}
+
+input[type=file]::file-selector-button {
+    margin-right: 5px;
+}
+
+button:hover,input[type=submit]:hover,input[type=file]::file-selector-button:hover {
+    background-color: var(--fg);
+    color: var(--textarea);
+}
+#comment {
+    width: 2em !important;
+}
+#comment *{
+    stroke: var(--fg) !important;
+}
+#comment:hover *{
+    stroke: var(--light-red) !important;
 }

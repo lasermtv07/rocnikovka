@@ -33,9 +33,14 @@
         echo "<div id=head>";
         echo '<center>';
         echo '<h1>小鳥</h1><span>';
-        echo '<h2><a href="index.php">Home</a></h2> <h2><a href="login.php">Login</a></h2> <h2><a href="register.php">Register</a></h2>';
-
-        echo "<h2><a href=\"index.php/?logout\" >Logout</a></h2>";
+        echo '<h2><a href="index.php">Home</a></h2>';
+        if(!isset($_SESSION["id"]))
+            echo '<h2><a href="login.php">Login</a></h2> <h2><a href="register.php">Register</a></h2>';
+        else{
+            echo "<h2><a href=\"profile.php?user=".$_SESSION["id"]."\">Profile</a></h2>";
+            echo "<h2><a href=profileConfig.php >Settings</a></h2>";
+            echo "<h2><a href=\"index.php/?logout\" >Logout</a></h2>";
+        }
         echo '<h2>';
         if(in_array("?",str_split($_SERVER['REQUEST_URI'])))
             echo "<a href=".$_SERVER['REQUEST_URI']."&";
@@ -43,9 +48,9 @@
             echo "<a href=".$_SERVER['REQUEST_URI']."?";
 
         if(isset($_COOKIE["light"]))
-            echo "change>dark</a>";
+            echo "change>Dark</a>";
         else
-            echo "change>light</a>";
+            echo "change>Light</a>";
         echo '</h2>';
         $nick=(isset($_SESSION["nick"]))?$_SESSION["nick"]:"anon";
         echo "</span>";
@@ -114,7 +119,8 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             echo "<span class=b><span onclick=addRepost($id,".((isset($_SESSION["id"]))?1:0).") >";
             echo "<span id=rc$id class=\"$green\" >".file_get_contents('ico/repost.svg')."</span>";
             echo "<span id=r$id style=font-size:1.5em class=up >$repostCount</span></span></span>";
-            echo "<span><a href=\"comments.php?tweet=".$id."\">comments</a></span>";
+
+            echo "<span><a href=\"comments.php?tweet=".$id."\">".file_get_contents('ico/comment.svg')."</a></span>";
             echo "</div>";
             echo "<hr>";
         }

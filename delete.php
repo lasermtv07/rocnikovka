@@ -36,6 +36,7 @@ try {
 
 $conn->query("DELETE FROM likes WHERE tweetID=".$_GET["id"]);
 $conn->query("DELETE FROM tweets WHERE quote=".$_GET["id"]);
+$conn->query("DELETE FROM comments WHERE tweetID=".$_GET["id"]);
 
     header('location: index.php');
 ?>

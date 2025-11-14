@@ -49,7 +49,7 @@
 
         <img id=pfp src="<?php echo $picture?>" alt="pfp" width="90" height="90"/>
 
-    <?php echo "<h1>$nick</h1>";?>
+    <?php echo "<h1 id=nick>$nick</h1>";?>
         <?php 
         //spocitej followery
             $conn=connect();

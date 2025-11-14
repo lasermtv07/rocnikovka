@@ -27,7 +27,7 @@ width: 99%;
     border: 2px solid black;
     float: left;   
 }
- h1{
+#nick{
     position: relative;
     left:25px;
     top:30px;
@@ -39,9 +39,4 @@ width: 99%;
 }
 img {
     background-color: gray;
-}
-
-.buttons {
-    display: flex;
-    justify-content: space-around !important;
 }
