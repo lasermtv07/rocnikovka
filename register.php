@@ -37,7 +37,7 @@
                     <option <?php echo ($option=="Other")?"selected":""; ?>>Other</option>
                 </select>
                  </td></tr>
-                <tr><td><input type=submit name=s ></td></tr>
+                <tr><td><input type=submit name=s value="Register" ></td></tr>
             </table>
         </form>
 <?php 

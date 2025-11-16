@@ -32,7 +32,7 @@
 <?php echo $r["description"]; ?>
 </textarea>
 
-        <input type="submit" name="s" />
+        <input type="submit" name="s" value="Change" />
     </form>
 <?php 
 if(isset($_POST["s"])){

@@ -24,7 +24,7 @@
                 <td><input type=password name=pass /></td>
             </tr>
             <tr><td>
-                <input type="submit" name="s" />
+                <input type="submit" name="s" value="Login" />
             </tr></td>
         </table>
     </form>
@@ -33,13 +33,20 @@
         if(isset($_POST["s"])){
             if(!(isset($_POST["nick"]) && isset($_POST["pass"]))){
                 echo "<b>Error: nickname/password not entered</b>";
+                foot();
                 die();
             }
             $nick=$_POST["nick"];
             $pass=$_POST["pass"];
 
             if($nick=="" || $pass==""){
-                echo "<b>Error: must enter nickname/password!</b>";
+                echo <<<EOF
+                <div class=error >
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <b>Error: must enter nickname/password!</b>
+                </div>
+                EOF;
+                foot();
                 die();
             }
 

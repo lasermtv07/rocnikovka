@@ -69,7 +69,7 @@
     <hr /><hr />
     <?php
         listTweets($user);
-        //foot();
+        foot();
     ?>
     </main>
 </body>

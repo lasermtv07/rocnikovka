@@ -125,7 +125,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             echo "<hr>";
         }
     function foot(){
-        echo "<div id=foot><hr />(c) Michal Chmelar 2025. ";
+        echo "<div id=foot><hr />&copy; Michal Chmelar 2025. ";
         if(!isset($_COOKIE["visited"])){
             $t=file_get_contents('visits.txt');
             file_put_contents('visits.txt',(int)$t+1);

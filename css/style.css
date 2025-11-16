@@ -113,7 +113,7 @@ main h1 {
     justify-content: space-around;
 }
 
-textarea,input[type=text],input[type=password] {
+textarea,input[type=text],input[type=password],select,input[type=date] {
     background-color: var(--textarea);
     color: var(--fg);
     font-size:1.05rem;
@@ -146,4 +146,12 @@ button:hover,input[type=submit]:hover,input[type=file]::file-selector-button:hov
 }
 #comment:hover *{
     stroke: var(--light-red) !important;
+}
+
+.error {
+    border: 3px solid var(--red);
+    color: white;
+    display: inline-block;
+    padding: 10px;
+    background-color: var(--light-red);
 }

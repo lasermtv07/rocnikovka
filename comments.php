@@ -44,7 +44,7 @@ head();
         ?>
         <form method=POST>
             <textarea name="text" style=width:99%;height:100px;></textarea>
-            <input type=submit name=s />
+            <input type=submit name=s value="Post" />
         </form>
         <script src=js/like.js ></script>
         <?php
@@ -105,6 +105,7 @@ head();
                 echo "<a href=deleteComment.php?tweet=".$_GET["tweet"]."&id=$id style=float:right >Delete</a>";
             echo "<p>$comment</p>";
         }
+        foot();
         ob_end_flush();
         ?>
     </main>
