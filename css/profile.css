@@ -40,3 +40,25 @@ width: 99%;
 img {
     background-color: gray;
 }
+
+.follow1,.follow2 {
+    padding-left: 0.3rem;
+    border:2px solid var(--fg);
+    display:inline-block;
+    text-decoration: none !important;
+}
+
+.follow2 {
+    background-color: #83a598;
+    color: #f9f5d7 !important;
+}
+.follow3 {
+    display: inline-block;
+    padding: 0 20px;
+    background-color: var(--bg);
+    border-left: 2px solid var(--fg);
+}
+
+.lr a {
+    text-decoration: none !important;
+}

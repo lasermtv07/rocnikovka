@@ -32,7 +32,7 @@
     <?php
         if(isset($_POST["s"])){
             if(!(isset($_POST["nick"]) && isset($_POST["pass"]))){
-                echo "<b>Error: nickname/password not entered</b>";
+                errorBox("<b>Error: nickname/password not entered</b>");
                 foot();
                 die();
             }
@@ -40,12 +40,7 @@
             $pass=$_POST["pass"];
 
             if($nick=="" || $pass==""){
-                echo <<<EOF
-                <div class=error >
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                    <b>Error: must enter nickname/password!</b>
-                </div>
-                EOF;
+                errorBox("Error: must enter nickname/password!");
                 foot();
                 die();
             }
@@ -61,12 +56,12 @@
             $stmt->execute();
             $users=$stmt->get_result();
             if(mysqli_num_rows($users)==0){
-                echo "<b>Error: wrong username/password</b>";
+                errorBox("<b>Error: wrong username/password</b>");
                 foot();
                 die();
             }
             if($users->fetch_assoc()["suspension"]==1){
-                echo "<b>Error: account suspended</b>";
+                errorBox("<b>Error: account suspended</b>");
                 foot();
                 die();
             }
@@ -74,7 +69,7 @@
 
             //check login
             if(isset($_SESSION["id"]) && $_SESSION["id"]!=""){
-                echo "<b>Error:already logged in!</b>";
+                errorBox("<b>Error:already logged in!</b>");
                 foot();
                 die();
             }

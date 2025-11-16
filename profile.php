@@ -57,13 +57,32 @@
             $stmt->bind_param("i",$user);
             $stmt->execute();
             $stmt=$stmt->get_result();
+            $followCount=$stmt->fetch_assoc();
+
+            //checkni jestli followuju
+            $follows=false;
+            $stmt=$conn->prepare('SELECT count(*) FROM follows WHERE followedID=? AND followerID=?');
+            $stmt->bind_param("ii",$user,$_SESSION["id"]);
+            $stmt->execute();
+            $stmt=$stmt->get_result();
             $stmt=$stmt->fetch_assoc();
+            $follows=($stmt["count(*)"]>0);
+            /*
         if($user==$_SESSION["id"])
             echo "<span class=lr> <a href=\"profileConfig.php\" style=color:$textColor>profile</a> <a>follows: ";
         else 
-            echo "<span class=lr> <a href=\"follow.php?id=".$_GET['user']."\" style=color:$textColor>follow";
+            echo "<span class=lr> <div class=follows1 ><a href=\"follow.php?id=".$_GET['user']."\" style=color:$textColor>follow";
 
-            echo "(".$stmt["count(*)"].")</a></span><br><br>";
+            echo "(".$stmt["count(*)"].")</a></span><br><br>";*/
+        $class="follow1";
+        if($follows)
+            $class="follow2";
+        $link="follow.php?id=".$_GET['user'];
+        if($_SESSION["id"]==$user)
+            $link="";
+        echo "<div class=\"lr $class\"><a href=$link >follow </a> ";
+        echo "</a><div class=follow3>".$followCount["count(*)"]."</div></div>";
+        echo "<br><br>";
         ?>
     <p><?php echo $description; ?></p>
     <hr /><hr />

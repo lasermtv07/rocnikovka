@@ -28,6 +28,10 @@
     }
 
     function head(){
+        //nastav font awesome
+        require 'secrets.php';
+        echo $font_awesome;
+
         session_start();
         echo '<link rel=stylesheet href=css/style.css />';
         echo "<div id=head>";
@@ -192,7 +196,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             $quote=$i['quote'];
             
             if($quote!=NULL){
-                echo "<b>Reposted by: $username</b><br>";
+                echo "<i class=\"fa-solid fa-share\"></i><b>Reposted by: $username</b><br>";
                 $st=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE tweets.id=$quote;");
                 $st=$st->fetch_assoc();
                 $id=$quote;
@@ -272,4 +276,12 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             session_destroy();
     }
 
+    function errorBox($string){
+        echo<<<EOF
+                <div class=error >
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <b>$string</b>
+                </div>
+                EOF;
+    }
 ?>

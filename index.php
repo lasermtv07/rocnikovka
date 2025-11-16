@@ -79,17 +79,17 @@
 
             $cont=true;
             if(!isset($_SESSION["nick"])){
-                echo "<b>Error: must be logged in</b>";
+                errorBox("Error: must be logged in");
                 $cont=false;
             }
             //validuj tweet
             $tweet=$_POST["tweet"];
             if($tweet=="" && $cont){
-                echo "<b>Error: post cannot be empty!</b>";
+                errorBox("<b>Error: post cannot be empty!</b>");
                 $cont=false;
             }
             if(mb_strlen($tweet)>255){
-                echo "<b>Error: post cannot be longer than 256 characters!</b>";
+                errorBox("<b>Error: post cannot be longer than 256 characters!</b>");
                 $cont=false;
             }
             $stmt=$conn->query('select string from swears');
@@ -98,7 +98,7 @@
                     continue;
                 //todo: zlepsit validaci
                 if(preg_match('/'.$i['string'].'/i',$tweet)){
-                    echo "<b>error: cannot contain swears.</b>";
+                    errorBox( "<b>error: cannot contain swears.</b>");
                     $cont=false;
                 }
             }
@@ -128,11 +128,11 @@
                 $ext=explode(".",$_FILES["image"]["name"])[1]; //pripona
                 $check=getimagesize($file["tmp_name"]);
                 if(!$check){ //vyhodi chybu kdyz neni obrazek
-                    echo "<b>Error: invalid uploaded file!</b>";
+                    errorBox("<b>Error: invalid uploaded file!</b>");
                     $cont=false;
                 }
                 elseif($file["size"]>500000){ //chzba kdyz moc velkej
-                    echo "<b>Error: file too large</b>";
+                    errorBox("<b>Error: file too large</b>");
                     $cont=false;
                 }
                 else {

@@ -19,12 +19,13 @@
         $r=$result->fetch_assoc();
         #var_dump($r);
         if(!isset($_SESSION["id"])){
-            echo "<b>Error: must be logged in!</b>";
+            errorBox("<b>Error: must be logged in!</b>");
+            foot();
             die();
         }
     ?>
     <main>
-    <h1>profile config</h1>
+    <h1>Profile settings</h1>
     <form method=POST >
         <b>Nickname: </b><input type="text" name="nick" value="<?php echo $r['username']; ?>"/>
         <br><b>Description: </b><br>
@@ -38,20 +39,22 @@
 if(isset($_POST["s"])){
     $nick=htmlspecialchars($_POST["nick"]);
     $desc=htmlspecialchars($_POST["desc"]);
+    $cont=true;
     
     //validuj prazdnej nick
     if(strlen($nick)==0 || $nick==""){
-        echo "<b>Error: nick cannot be empty!</b>";
-        foot();
-        die();
+        errorBox( "<b>Error: nick cannot be empty!</b>");
+        $cont=false;
     }
 
-    $stmt=$conn->prepare('UPDATE `accounts` SET `username` = ?, `description` = ? WHERE `id` = ?');
-    $stmt->bind_param("ssi",$nick,$desc,$id);
-    $stmt->execute();
+    if($cont){
+        $stmt=$conn->prepare('UPDATE `accounts` SET `username` = ?, `description` = ? WHERE `id` = ?');
+        $stmt->bind_param("ssi",$nick,$desc,$id);
+        $stmt->execute();
 
-    header('location:'.$_SERVER['REQUEST_URI']);
-    $_SESSION['nick']=$nick;
+        header('location:'.$_SERVER['REQUEST_URI']);
+        $_SESSION['nick']=$nick;
+    }
     
 
 }    
@@ -69,8 +72,8 @@ if(isset($_POST["s"])){
         $q="pfp/default.png";
     echo "<img src=\"$q\" style=display:inline-block;float:left; width=90 height=90 />"
     ?>
-    &nbsp;<input type=file name="image" style=margin-top:20px; ><br>
-    &nbsp;<input type=submit name="imageSub" style=margin-bottom:25px; value="Change" >
+    &nbsp;<input type=file name="image" style=margin-top:20px; class=noMargin ><br>
+    &nbsp;<input type=submit name="imageSub" style="margin-bottom:25px !important;" value="Change" class=noMargin >
 </form>
 <?php
 if(isset($_POST["imageSub"])){
@@ -96,11 +99,11 @@ if(isset($_POST["imageSub"])){
     header('location:'.$_SERVER['REQUEST_URI']);
         }
         else {
-            echo "<b>Error: invalid size/type</b>";
+            errorBox("<b>Error: invalid size/type</b>");
         }
     }
     else {
-        echo "<b>Error: invalid size/type</b>";
+        errorBox("<b>Error: invalid size/type</b>");
     }
 }
 ?>
