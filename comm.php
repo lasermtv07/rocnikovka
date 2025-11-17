@@ -85,15 +85,18 @@
         }
 
     }
-function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$conn){
-            echo "<b><a href=profile.php?user=".$authorID." >".$username."</a></b> - ".$postTime;
+function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$pfp,$conn){
+            if($pfp=="")
+                $pfp="pfp/default.png";
+            echo "<div class=tweetLink2><img src=$pfp style=display:inline-block; width=50 height=50 /></div> &nbsp;";
+            echo "<span class=tweetLink1><b><a href=profile.php?user=".$authorID." >".$username."</a></b> - $postTime</span>";
             //mazani
             if(isAdmin($_SESSION["id"]) || $_SESSION["id"]==$authorID)
                 echo "<a style=color:red;float:right href=delete.php?id=".$id.">Delete</a>";
-            echo "<p>".$text."</p>";
+            echo "<p class=postText >".$text."</p>";
             //obrazek
             if($picture)
-                echo "<img src=images/".$picture." class=post_img />";
+                echo "<div style=margin-left:60px; ><img style=margin:auto; src=images/".$picture." class=post_img /></div>";
             //liky
             $likeCount=mysqli_num_rows($conn->query("SELECT * FROM likes WHERE tweetID=".$id));
             //barveni pro liky ktere udelil uzivatel
@@ -106,7 +109,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             if($count>0)
                 $color=" liked";
 
-            echo "<div class=buttons><span class=a><span style=font-size:2em;$color >";
+            echo "<div class=buttons style=margin-left:50px ><span class=a><span style=font-size:2em;$color >";
             echo "<span id=\"lc".$id."\"onclick=addLike('like.php?id=".$id."&ret=$user',".$id.",".((isset($_SESSION["id"]))?'true':'false').") class=\"like$color\">♥ <span id=l".$id. " style=\"color:var(--fg) !important;font-size:1.25rem;\">$likeCount</span></span></span>";
             echo "</span>";
             //reposty (quoty)
@@ -169,9 +172,9 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
         echo "<br>";
         if(!$changeFeed || $user==NULL){
             if($user=="") //pokud generuje homepage (discover)
-                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC $limitString");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC $limitString");
             else //pokud generuje stranku uzivatele
-                $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user ORDER BY id DESC $limitString");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user ORDER BY id DESC $limitString");
         } else { // homepage ale following feed
             $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user' $limitString");
             $stmtText="($user";
@@ -180,7 +183,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
                 $stmtText.=$i["followedID"];
             }
             $stmtText.=")";
-            $stmt=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id IN $stmtText ORDER BY id DESC $limitString");
+            $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id IN $stmtText ORDER BY id DESC $limitString");
             
         }
         $pageCount=0;
@@ -194,10 +197,11 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             $postTime=$i['postTime'];
             $picture=$i['picture'];
             $quote=$i['quote'];
+            $pfp=$i['pfp'];
             
             if($quote!=NULL){
                 echo "<i class=\"fa-solid fa-share\"></i><b>Reposted by: $username</b><br>";
-                $st=$conn->query("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE tweets.id=$quote;");
+                $st=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE tweets.id=$quote;");
                 $st=$st->fetch_assoc();
                 $id=$quote;
                 $authorID=$st['authorID'];
@@ -206,9 +210,10 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
                 $postTime=$st['postTime'];
                 $picture=$st['picture'];
                 $quote=$st['quote'];
+                $pfp=$st["pfp"];
             }
             
-            printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$conn);
+            printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$pfp,$conn);
 
         }
 
@@ -262,12 +267,20 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             if($i["picture"]!=NULL && $i["picture"]!='NULL')
                 unlink('images/'.$i['picture']);
         }
+
+        //smaz komentare
+        $conn->query("DELETE FROM comments WHERE authorID=$id");
+        $stmt=$conn->query("SELECT id FROM tweets WHERE authorID=$id");
+        while($i=$stmt->fetch_assoc()){
+            $conn->query("DELETE FROM comments WHERE tweetID=".$i["id"]);
+        }
         //smaz vsechny tweety
         $conn->query("DELETE FROM tweets WHERE authorID=$id");
         //smaz vsechny likes
         $conn->query("DELETE FROM likes WHERE userID=$id");
         //smaz i follow relace
         $conn->query("DELETE FROM follows WHERE followerID=$id or followedID=$id");
+
         //smaz ucet
         $conn->query("DELETE FROM accounts WHERE id=$id");
 
@@ -281,7 +294,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
                 <div class=error >
                     <i class="fa-solid fa-triangle-exclamation"></i>
                     <b>$string</b>
-                </div>
+                </div><br>
                 EOF;
     }
 ?>

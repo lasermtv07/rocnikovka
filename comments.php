@@ -20,7 +20,7 @@ head();
             session_start();
             $conn=connect();
             //vypise tweet kterej komentujeme
-            $stmt=$conn->prepare("SELECT tweets.*,accounts.username FROM tweets INNER JOIN accounts ON tweets.authorID=accounts.id WHERE tweets.id=?");
+            $stmt=$conn->prepare("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID=accounts.id WHERE tweets.id=?");
             $stmt->bind_param("i",$_GET["tweet"]);
             $stmt->execute();
             $stmt=$stmt->get_result();
@@ -38,8 +38,9 @@ head();
             $postTime=$stmt['postTime'];
             $picture=$stmt['picture'];
             $quote=$stmt['quote'];
+            $pfp=$stmt['pfp'];
 
-            printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$conn);
+            printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$pfp,$conn);
             echo "<b>".$_SESSION["nick"]."</b>";
         ?>
         <form method=POST>
@@ -99,8 +100,8 @@ head();
                 $picture=$i["picture"];
             
             echo "<hr />";
-            echo "<img src=$picture style=display:inline-block width=25 /> ";
-            echo "<b><a href=profile.php?user=$authorID>$nick</a></b>";
+            echo "<img src=$picture style=\"display:inline-block;border: 2px solid var(--fg);\" width=25 /> ";
+            echo "<b style=position:relative;top:-10px;><a href=profile.php?user=$authorID>$nick</a></b>";
             if(isAdmin($_SESSION["id"]) || $authorID==$_SESSION["id"])
                 echo "<a href=deleteComment.php?tweet=".$_GET["tweet"]."&id=$id style=float:right >Delete</a>";
             echo "<p>$comment</p>";
