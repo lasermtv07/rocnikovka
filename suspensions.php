@@ -8,6 +8,7 @@
     <style>
         table {
             border-collapse:collapse;
+            background-color:var(--bg);
         }
         table,td,th {
             border:2px solid black;
@@ -25,7 +26,7 @@
     <?php head();?>
     <main>
     <h1>suspensions</h1>
-    <p><b>Suspension</b> forbids the user from signing back in. Account stays public and posts intact.<br>
+    <p><b>Suspension</b> forbids the user from signing back in. Posts are still saved.<br>
     <b>Deletion</b> permanently removes the account and any activities associated with it, including tweets, likes and follows.</p>
     <hr />
     <?php 
@@ -62,7 +63,8 @@
             echo "<td><a href=\"".$_SERVER["REQUEST_URI"]."?delete=".$i["id"]."\">Delete</a></td>";
             echo "</tr>\n";
         }
-
+        echo "</table>";
+        foot();
     ?>
     </main>
 </body>

@@ -44,7 +44,10 @@ if(isset($_POST['s2'])){
     ?>
     <li><form method=POST ><input type=text name="swear" /> <input type="submit" name="s" value="add" /></form></li>
 </ul>
+<?php 
 
+    foot();
+?>
     </main>
 </body>
 </html>

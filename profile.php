@@ -82,9 +82,9 @@
             $link="";
         echo "<div class=\"lr $class\"><a href=$link >follow </a> ";
         echo "</a><div class=follow3>".$followCount["count(*)"]."</div></div>";
-        echo "<br><br>";
+        echo "<br><br><br>";
         ?>
-    <p><?php echo $description; ?></p>
+    <p><?php echo "<p>".$description."</p>"; ?></p>
     <hr /><hr />
     <?php
         listTweets($user);

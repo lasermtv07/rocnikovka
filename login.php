@@ -17,7 +17,10 @@
         <table>
             <tr>
                 <td><b>Nickname: </b></td>
-                <td><input type=text name=nick /></td>
+                <td><input type=text name=nick value="<?php
+                    if(isset($_POST["nick"]))
+                        echo $_POST["nick"];
+                ?>"/></td>
             </tr>
             <tr>
                 <td><b>Password: </b></td>

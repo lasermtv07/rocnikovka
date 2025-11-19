@@ -172,9 +172,9 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
         echo "<br>";
         if(!$changeFeed || $user==NULL){
             if($user=="") //pokud generuje homepage (discover)
-                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id ORDER BY id DESC $limitString");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension  FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE (accounts.suspension <> 1 OR accounts.suspension IS NULL) ORDER BY id DESC $limitString");
             else //pokud generuje stranku uzivatele
-                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user ORDER BY id DESC $limitString");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension  FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user AND (accounts.suspension <> 1 OR accounts.suspension IS NULL)  ORDER BY id DESC $limitString");
         } else { // homepage ale following feed
             $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user' $limitString");
             $stmtText="($user";
@@ -183,7 +183,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
                 $stmtText.=$i["followedID"];
             }
             $stmtText.=")";
-            $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id IN $stmtText ORDER BY id DESC $limitString");
+            $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id IN $stmtText AND (accounts.suspension <> 1 OR accounts.suspension IS NULL) ORDER BY id DESC $limitString");
             
         }
         $pageCount=0;
@@ -198,19 +198,27 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             $picture=$i['picture'];
             $quote=$i['quote'];
             $pfp=$i['pfp'];
-            
+
+
             if($quote!=NULL){
-                echo "<i class=\"fa-solid fa-share\"></i><b>Reposted by: $username</b><br>";
-                $st=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE tweets.id=$quote;");
+
+                //checkuje suspendle uzivatele
+                $st=$conn->query("SELECT suspension FROM accounts WHERE id=(SELECT authorID FROM tweets WHERE id=$quote)");
                 $st=$st->fetch_assoc();
-                $id=$quote;
-                $authorID=$st['authorID'];
-                $username=$st['username'];
-                $text=$st['text'];
-                $postTime=$st['postTime'];
-                $picture=$st['picture'];
-                $quote=$st['quote'];
-                $pfp=$st["pfp"];
+
+                if($st["suspension"]!=1){
+                    echo "<i class=\"fa-solid fa-share\"></i><b>Reposted by: $username</b><br>";
+                    $st=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE tweets.id=$quote;");
+                    $st=$st->fetch_assoc();
+                    $id=$quote;
+                    $authorID=$st['authorID'];
+                    $username=$st['username'];
+                    $text=$st['text'];
+                    $postTime=$st['postTime'];
+                    $picture=$st['picture'];
+                    $quote=$st['quote'];
+                    $pfp=$st["pfp"];
+                }
             }
             
             printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$pfp,$conn);
