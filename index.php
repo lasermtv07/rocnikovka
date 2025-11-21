@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kotori</title>
+    <title>home :: kotori</title>
     <style>
         #feed h3{
             width: 100%;
@@ -72,6 +72,7 @@
                 }
             ?>
         </form>
+        <hr class="delim">
     <?php 
 
         $conn=connect();

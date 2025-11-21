@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>profile settings :: kotori</title>
 </head>
 <body>
     <?php
@@ -25,11 +25,11 @@
         }
     ?>
     <main>
-    <h1>Profile settings</h1>
+    <h1>profile settings</h1>
     <form method=POST >
         <b>Nickname: </b><input type="text" name="nick" value="<?php echo $r['username']; ?>"/>
         <br><b>Description: </b><br>
-        <textarea name="desc" style=width:100%;height:100px;>
+        <textarea name="desc" style=width:99%;height:100px;>
 <?php echo $r["description"]; ?>
 </textarea>
 

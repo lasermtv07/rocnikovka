@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>comments</title>
+    <title>comments :: kotori</title>
 </head>
 <body>
 <?php 
@@ -12,7 +12,7 @@ head();
 ?>
     <main>
         <h1>comments</h1>
-        <hr />
+        <hr class=delim />
         <?php 
         //vstupni bufferovani - aby fungovalo resetovani headeru
         //uklada vypsana data do bufferu, aby mohly byt headery upraveny behem psani do souboru

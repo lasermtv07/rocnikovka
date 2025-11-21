@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset=UTF-8 />
-        <title>register</title>
+        <title>register :: kotori</title>
     </head>
     <body>
         <?php 

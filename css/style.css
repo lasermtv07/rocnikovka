@@ -8,8 +8,10 @@
     --red:#cc241d;
     --aqua:#8ec87c;
     --textarea: #7c6f64;
+    --border: #928374;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 body{
     color:var(--fg)  !important;
@@ -22,6 +24,8 @@ main {
     background-color: var(--bg);
     padding: 10px;
     min-height: 100vh;
+    border-left: 2px solid var(--border);
+    border-right: 2px solid var(--border);
 }
 
 a {
@@ -34,12 +38,15 @@ main h1 {
 
 #head {
     float: left;
-    width: 29%;
+    width: 28%;
     margin: 0;
     background-color: var(--body-bg);
 }
-#head h2 {
+#head a {
+    text-decoration: none;
+}
 
+#head h2 {
     margin:0;
     padding: 10px 0;
 }
@@ -64,7 +71,7 @@ main h1 {
 
 @media only screen and (max-width: 900px) {
     main {
-        width: 98%;
+        width: 95%;
         margin: 0 !important;
     }
     #head {
@@ -167,7 +174,7 @@ button:hover,input[type=submit]:hover,input[type=file]::file-selector-button:hov
 }
 
 .postText {
-    margin-left:60px;
+    margin-left:63px;
     font-size: 1.1rem;
     margin-top:0;
 }
@@ -179,4 +186,12 @@ button:hover,input[type=submit]:hover,input[type=file]::file-selector-button:hov
 }
 .tweetLink2 img {
     border: 2px solid var(--fg);
+}
+
+ hr.delim {
+    color: var(--border);
+    position: relative;
+    left:-10px;
+    width: calc( 100% + 19px );
+
 }

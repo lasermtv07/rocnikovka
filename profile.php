@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/profile.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>profile</title>
+    <title>profile :: kotori</title>
 </head>
 <body>
     <?php 
@@ -85,7 +85,7 @@
         echo "<br><br><br>";
         ?>
     <p><?php echo "<p>".$description."</p>"; ?></p>
-    <hr /><hr />
+    <hr class=delim />
     <?php
         listTweets($user);
         foot();

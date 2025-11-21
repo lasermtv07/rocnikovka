@@ -28,6 +28,11 @@
     }
 
     function head(){
+        //nastav favicon
+        if(isset($_COOKIE["light"]))
+            echo "<link rel=icon href=ico/favicon-light.png />";
+        else
+            echo "<link rel=icon href=ico/favicon-dark.png />";
         //nastav font awesome
         require 'secrets.php';
         echo $font_awesome;
@@ -86,6 +91,7 @@
 
     }
 function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$pfp,$conn){
+            echo "<div class=tweet>";
             if($pfp=="")
                 $pfp="pfp/default.png";
             echo "<div class=tweetLink2><img src=$pfp style=display:inline-block; width=50 height=50 /></div> &nbsp;";
@@ -129,10 +135,11 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
 
             echo "<span><a href=\"comments.php?tweet=".$id."\">".file_get_contents('ico/comment.svg')."</a></span>";
             echo "</div>";
-            echo "<hr>";
+            echo "<hr class=delim>";
+            echo "</div>";
         }
     function foot(){
-        echo "<div id=foot><hr /><center><a href=contact.php>Contact</a></center><center>&copy; Michal Chmelař 2025.";
+        echo "<div id=foot><hr class=delim /><center><a href=contact.php>Contact</a></center><center>&copy; Michal Chmelař 2025.";
         if(!isset($_COOKIE["visited"])){
             $t=file_get_contents('visits.txt');
             file_put_contents('visits.txt',(int)$t+1);
