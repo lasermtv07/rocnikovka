@@ -132,15 +132,15 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             echo "<hr>";
         }
     function foot(){
-        echo "<div id=foot><hr />&copy; Michal Chmelar 2025. ";
+        echo "<div id=foot><hr /><center><a href=contact.php>Contact</a></center><center>&copy; Michal Chmelař 2025.";
         if(!isset($_COOKIE["visited"])){
             $t=file_get_contents('visits.txt');
             file_put_contents('visits.txt',(int)$t+1);
         }
 
-        echo "<b>VISITED: ". file_get_contents('visits.txt');
+        echo " <b> VISITED: ". file_get_contents('visits.txt');
         setcookie('visited',"true",time()+86400*30,"/");
-        echo "</div>";
+        echo " </center></div>";
     }
     function listTweets($user,$changeFeed=false,$pagingLimit=10){
         $conn=connect();
