@@ -36,11 +36,9 @@
             setcookie('follows','',0);
             unset($_COOKIE["follows"]);
         }
-        $tags=['Sports','News','Gaming','Tech','Science','Movies','Music'];
+
     ?>
-    <div id=right>
-        aaa
-    </div>
+
     <main>
 
         <div id=feed >
@@ -67,11 +65,6 @@
         <form method=POST enctype="multipart/form-data">
             <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
             <input type=submit name=s value="Send" /> <input type=file name="image" /><br />
-            <?php
-                foreach($tags as $i){
-                    echo "<input type=\"checkbox\" name=\"tag$i\" id=\"tag$i\"> <label for=\"tag$i\">$i</label><br>";
-                }
-            ?>
             <?php 
                 if(isAdmin($_SESSION['id'])){
                     echo "<a href=swears.php >Change swears</a>";
@@ -151,15 +144,8 @@
             //posli post
             $tweet=htmlspecialchars($tweet);
             if($cont){
-                //preved tagy na string
-                $tagString="";
-                foreach($tags as $i){
-                    if(isset($_POST["tag$i"]))
-                        $tagString.=$i.";";
-                }
-
-                $stmt=$conn->prepare('INSERT INTO `tweets` (authorID,`text`,picture,`postTime`,`tags`) VALUES (?,?,?,CURRENT_TIMESTAMP,?)');
-                $stmt->bind_param("isss",$_SESSION["id"],$tweet,$fname,$tagString);
+                $stmt=$conn->prepare('INSERT INTO `tweets` (authorID,`text`,picture,`postTime`) VALUES (?,?,?,CURRENT_TIMESTAMP)');
+                $stmt->bind_param("iss",$_SESSION["id"],$tweet,$fname);
                 $stmt->execute();
 
                 if(isset($_GET["follows"]) || isset($_COOKIE["follows"]))

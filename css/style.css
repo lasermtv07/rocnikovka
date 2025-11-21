@@ -180,9 +180,3 @@ button:hover,input[type=submit]:hover,input[type=file]::file-selector-button:hov
 .tweetLink2 img {
     border: 2px solid var(--fg);
 }
-
-#right {
-    margin-top: 25px;
-    float:right;
-    width: 29%;
-}
