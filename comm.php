@@ -138,6 +138,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             echo "<hr class=delim>";
             echo "</div>";
         }
+
     function foot(){
         echo "<div id=foot><hr class=delim /><center><a href=contact.php>Contact</a></center><center>&copy; Michal Chmelař 2025.";
         if(!isset($_COOKIE["visited"])){
@@ -149,6 +150,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
         setcookie('visited',"true",time()+86400*30,"/");
         echo " </center></div>";
     }
+
     function listTweets($user,$changeFeed=false,$pagingLimit=10){
         $conn=connect();
         //cookie pro pagovani
