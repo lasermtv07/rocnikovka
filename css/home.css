@@ -1,0 +1,52 @@
+        #feed h3{
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+        }
+        #feed a {
+            text-decoration: none;
+        }
+        #feed .discoverH {
+            text-decoration: underline;
+        }
+        #search {
+            float:right;
+            width: 28%;
+            margin-top:25px;
+        }
+        #search form {
+            width: 100%;
+        }
+        #search form input[type=text] {
+            width: calc( 99% - 80px );
+        }
+        #search form input[type=submit] {
+            width:60px;
+        }
+
+
+textarea[name=tweet]{
+    width:calc( 99% - 51px );
+    height:100px;
+    float: right;
+}
+#profTweet {
+    border: 2px solid var(--fg);
+    margin-right: 2px;
+}
+#tweetSend {
+    width: 60px;
+}
+@media only screen and (max-width: 900px) {
+    #search input[type=text] {
+        width: 99%;
+        margin-left:3px;
+    }
+    #search {
+        width: 100%;
+        background-color: var(--body-bg);
+        margin-top:0px;
+        margin-bottom:25px;
+    }
+
+}

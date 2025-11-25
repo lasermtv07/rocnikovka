@@ -4,26 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home :: kotori</title>
-    <style>
-        #feed h3{
-            width: 100%;
-            display: flex;
-            justify-content: space-evenly;
-        }
-        #feed a {
-            text-decoration: none;
-        }
-        #feed .discoverH {
-            text-decoration: underline;
-        }
-
-    </style>
+    <link rel=stylesheet href=css/home.css />
 </head>
 <body>
     <?php
         require 'comm.php';
         head();
         session_start();
+        $conn=connect();
         if(isset($_GET["logout"])){
             session_destroy();
             header('location:'.explode("/?",$_SERVER['REQUEST_URI'])[0]);
@@ -38,9 +26,13 @@
         }
 
     ?>
-
+    <div id="search">
+        <form action=search.php >
+            <input type=text name=search placeholder="Search" />
+            <input type=submit value="Search" />
+        </form>
+    </div>
     <main>
-
         <div id=feed >
             <h3>
                 <?php
@@ -61,10 +53,20 @@
                 ?>
             </h3>
         </div>
-        <b><?php echo $_SESSION['nick']; ?></b>
         <form method=POST enctype="multipart/form-data">
-            <textarea name=tweet style=width:99%;height:100px; ></textarea><br>
-            <input type=submit name=s value="Send" /> <input type=file name="image" /><br />
+<?php 
+//zobrazi profilovku vedle textarei
+$pic="pfp/default.png";
+if(isset($_SESSION["id"])){
+    $stmt=$conn->query("SELECT picture FROM accounts where id=".$_SESSION["id"]);
+    $stmt=$stmt->fetch_assoc();
+    if(isset($stmt['picture']))
+        $pic=$stmt['picture'];
+}
+echo "<img src=\"$pic\" id=profTweet width=40 height=40 />";
+?>
+            <textarea name=tweet placeholder="Got anything to say?"></textarea><br>
+            <input type=submit name=s value="Send" id=tweetSend /> <input type=file name="image" /><br />
             <?php 
                 if(isAdmin($_SESSION['id'])){
                     echo "<a href=swears.php >Change swears</a>";
@@ -72,10 +74,8 @@
                 }
             ?>
         </form>
-        <hr class="delim">
     <?php 
 
-        $conn=connect();
         if(isset($_POST["s"])){
 
             $cont=true;
@@ -155,6 +155,7 @@
                     header('location: .');
             }
         }
+        echo '<hr class="delim">';
         //vypis existujici posty
         if(isset($_COOKIE["follows"]) || isset($_GET["follows"]))
             listTweets($_SESSION["id"],true);

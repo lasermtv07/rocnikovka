@@ -40,6 +40,7 @@ $conn=connect();
         <input type=text name=search id=search
         value="<?php echo $_GET["search"];?>"
         /> <input type=submit value="Search" />
+        <input type=hidden name="<?php echo isset($_GET["tweet"])?"tweet":"prof";?>" />
     </form>
 
     <h3><div id=filter>
@@ -83,6 +84,9 @@ if(!isset($_GET["tweet"])){
         EOF;
         echo "<hr class=delim />";
     }
+}
+else {
+    listTweets("",match:htmlspecialchars($_GET["search"]));
 }
 ?>
 </main>

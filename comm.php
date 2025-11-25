@@ -151,7 +151,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
         echo " </center></div>";
     }
 
-    function listTweets($user,$changeFeed=false,$pagingLimit=10){
+    function listTweets($user,$changeFeed=false,$pagingLimit=10,$match=""){
         $conn=connect();
         //cookie pro pagovani
         $pageId=(is_null($_GET["user"]))?"":$_GET["user"];
@@ -177,15 +177,23 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             header('location: '.$newUrl);
         }
 
+        //pro hledani; matchuj jen posty obsahujici nejakou frazi
+        if($match!=""){
+            //prevence SQL injekci
+            $match=str_replace("'","\\'",$match);
+            $match=str_replace("\"","\\\"",$match);
+            $match=str_replace("`","\\`",$match);
+            $match=" AND `text` LIKE \"%$match%\"";
+        }
         echo "<script src=js/like.js ></script>";
         echo "<br>";
         if(!$changeFeed || $user==NULL){
             if($user=="") //pokud generuje homepage (discover)
-                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension  FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE (accounts.suspension <> 1 OR accounts.suspension IS NULL) ORDER BY id DESC $limitString");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension  FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE (accounts.suspension <> 1 OR accounts.suspension IS NULL)$match ORDER BY id DESC $limitString");
             else //pokud generuje stranku uzivatele
-                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension  FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user AND (accounts.suspension <> 1 OR accounts.suspension IS NULL)  ORDER BY id DESC $limitString");
+                $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension  FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user AND (accounts.suspension <> 1 OR accounts.suspension IS NULL)$match  ORDER BY id DESC $limitString");
         } else { // homepage ale following feed
-            $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user' $limitString");
+            $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user'$match $limitString");
             $stmtText="($user";
             while($i=$subStmt->fetch_assoc()){
                 $stmtText.=",";
