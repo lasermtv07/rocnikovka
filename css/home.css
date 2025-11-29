@@ -48,5 +48,8 @@ textarea[name=tweet]{
         margin-top:0px;
         margin-bottom:25px;
     }
+    #head {
+        margin-bottom: 0px !important;
+    }
 
 }

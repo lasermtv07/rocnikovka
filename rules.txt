@@ -1,0 +1,18 @@
+<h2 id="mcetoc_1jb827jr50">1. platform rules</h2>
+<ul>
+<li>don't break the law</li>
+<li>discrimination based on protected characteristics, including race, sexuality, gender, religious affiliation or disability is prohibited</li>
+<li>distribution of explicit content is not permitted. Please keep everything PG-13</li>
+<li>promotion of extremist political parties, ideologies or movements will result in immidiate ban and referral to the relevant authorities</li>
+<li>do not harass, cancel or bully other users</li>
+<li>do not spam</li>
+</ul>
+<div>&nbsp;</div>
+<h2 id="mcetoc_1jb82pcbh1">2. legal</h2>
+<ul>
+<li>The provider of this service reserves the right to ban the user for any reason</li>
+<li>This product is provided with <strong>NO WARRANTY, TO THE EXTENT PERMISSIBLE BY APPLICABLE LAW</strong>, and that includes any liability for content published on the platform (47 USC 230)</li>
+<li>Registration is permitted to users who have attained at least 13 years of age, or the minimal required age in their country.</li>
+<li>The code for the product is provided under the GNU AGPL license</li>
+</ul>
+<p>&nbsp;</p>

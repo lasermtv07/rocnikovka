@@ -140,7 +140,9 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
         }
 
     function foot(){
-        echo "<div id=foot><hr class=delim /><center><a href=contact.php>Contact</a></center><center>&copy; Michal Chmelař 2025.";
+        echo "<div id=foot><hr class=delim /><center><a href=contact.php>Contact</a>";
+        echo "&nbsp;<a href=rules.php>Rules</a>";
+        echo "</center><center>&copy; Michal Chmelař 2025.";
         if(!isset($_COOKIE["visited"])){
             $t=file_get_contents('visits.txt');
             file_put_contents('visits.txt',(int)$t+1);

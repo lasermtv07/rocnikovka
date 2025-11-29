@@ -88,6 +88,7 @@ if(!isset($_GET["tweet"])){
 else {
     listTweets("",match:htmlspecialchars($_GET["search"]));
 }
+foot();
 ?>
 </main>
 </body>

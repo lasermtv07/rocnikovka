@@ -73,10 +73,16 @@ main h1 {
     main {
         width: 95%;
         margin: 0 !important;
+        border-right: none;
+        border-left: none;
     }
     #head {
         width: 100%;
         display: block;
+        margin-bottom: 20px;
+    }
+    body {
+        background-color: var(--bg);
     }
 }
 

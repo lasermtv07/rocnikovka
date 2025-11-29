@@ -60,7 +60,7 @@ $pic="pfp/default.png";
 if(isset($_SESSION["id"])){
     $stmt=$conn->query("SELECT picture FROM accounts where id=".$_SESSION["id"]);
     $stmt=$stmt->fetch_assoc();
-    if(isset($stmt['picture']))
+    if(isset($stmt['picture']) && $stmt["picture"]!="")
         $pic=$stmt['picture'];
 }
 echo "<img src=\"$pic\" id=profTweet width=40 height=40 />";

@@ -3,6 +3,12 @@
     <head>
         <meta charset=UTF-8 />
         <title>register :: kotori</title>
+        <style>
+            .warn {
+                font-weight: bold;
+                color: var(--light-red)
+            }
+        </style>
     </head>
     <body>
         <?php 
@@ -26,22 +32,27 @@
         <h1>register</h1>
         <form method=POST>
             <table>
-                <tr><td><b>Nickname: </b></td><td> <input type=text name=nick value="<?php echo $nick; ?>"/> </td></tr>
-                <tr><td><b>Password: </b> </td><td><input type=password name=pass  value="<?php echo $pass; ?>"/> </td></tr>
-                <tr><td><b>Confirm password: </b> </td><td><input type=password name=passConf  value="<?php echo $passConf; ?>"/> </td></tr>
-                <tr><td><b>Email: </b></td><td> <input type=text name=email  value="<?php echo ($mail!="")?$mail:""; ?>" /> </td></tr>
-                <tr><td><b>Date of birth:</td><td> </b> <input type=date name=bdate  value="<?php echo $bdate; ?>" /> </td></tr>
-                <tr><td><b>Gender: </b></td><td>
-                <select name="gender">
+                <tr><td><b>Nickname: </b><span id=labelNick></span></td><td> <input type=text name=nick id=nick value="<?php echo $nick; ?>"/><span id=validNick class=warn></span></td></tr>
+                <tr><td><b>Password: </b> <span id=labelPass></span></td><td><input type=password name=pass id=pass value="<?php echo $pass; ?>"/> <span id=validPass class=warn></span></td></tr>
+                <tr><td><b>Confirm password: </b> <span id=labelConf></span></td><td><input type=password name=passConf id=conf value="<?php echo $passConf; ?>"/><span id=validConf class=warn></span></td></tr>
+                <tr><td><b>Email: </b><span id=labelEmail></span></td><td> <input type=text name=email id=email value="<?php echo ($mail!="")?$mail:""; ?>" /> <span id=validEmail class=warn></span></td></tr>
+                <tr><td><b>Date of birth:</td><td> </b> <input type=date name=bdate id=bdate value="<?php echo $bdate; ?>" /> </td></tr>
+                <tr><td><b>Gender: <span id=labelGender></span></b></td><td>
+                <select name="gender" id=gender>
                     <option>  </option>
                     <option <?php echo ($option=="Male")?"selected":""; ?>>Male</option>
                     <option <?php echo ($option=="Female")?"selected":""; ?>>Female</option>
                     <option <?php echo ($option=="Other")?"selected":""; ?>>Other</option>
                 </select>
+                <span id=validGender class=warn></span>
                  </td></tr>
-                <tr><td><input type=submit name=s value="Register" ></td></tr>
             </table>
+            <input type=checkbox name=legal id=legal>
+            <label for=legal ><b>By registering, I agree to obey <a href=rules.php >the rules of the platform</a>.</b></label>
+            <br>
+            <input type=submit name=s value="Register" >
         </form>
+        <script src=js/validation.js ></script>
 <?php 
     if(isset($_POST["s"])){
 
@@ -50,8 +61,14 @@
         //pripoj mysql
         $conn = connect();
 
+        //validuj souhlas s podminkama
+        if(!isset($_POST["legal"])){
+            errorBox("<b>Error: you must agree to the rules</b>");
+            foot();
+            die();
+        }
         //validuj uziv. jm.
-        if(!preg_match("/^[A-Za-z0-9ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž ]+$/",$nick) || mb_strlen($nick)<3){
+        if(!preg_match("/^[A-Za-z0-9ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž -]+$/",$nick) || mb_strlen($nick)<3){
             errorBox("<b>Error: illegal username</b>");
             foot();
             die();
