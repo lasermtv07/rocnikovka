@@ -156,7 +156,8 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
     function listTweets($user,$changeFeed=false,$pagingLimit=10,$match=""){
         $conn=connect();
         //cookie pro pagovani
-        $pageId=(is_null($_GET["user"]))?"":$_GET["user"];
+        //TODO: fix cookie u hledani
+        $pageId=(is_null($_GET["user"]))?(($changeFeed?"Fol":"")):$_GET["user"];
         if(!isset($_COOKIE["page".$pageId]))
             setcookie("page".$pageId,"1",time()+3600);
 
@@ -195,7 +196,7 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             else //pokud generuje stranku uzivatele
                 $stmt=$conn->query("SELECT tweets.*,accounts.username,accounts.picture as pfp,accounts.suspension  FROM tweets INNER JOIN accounts ON tweets.authorID = accounts.id WHERE accounts.id = $user AND (accounts.suspension <> 1 OR accounts.suspension IS NULL)$match  ORDER BY id DESC $limitString");
         } else { // homepage ale following feed
-            $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user'$match $limitString");
+            $subStmt=$conn->query("SELECT followedID FROM follows WHERE followerID='$user'");
             $stmtText="($user";
             while($i=$subStmt->fetch_assoc()){
                 $stmtText.=",";
