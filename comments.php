@@ -56,21 +56,15 @@ head();
             //validuj komentar
             if($comment==""){
                 $cont=false;
-                echo "<b>Error: Comment cannot be empty!</b>";
+                errorBox("<b>Error: Comment cannot be empty!</b>");
             }
             if(mb_strlen($comment)>255 && $cont){
                 $cont=false;
-                echo "<b>Error: Comment cannot be longer than 255 characters!</b>"; 
+                errorBox("<b>Error: Comment cannot be longer than 255 characters!</b>"); 
             }
-            $stmt=$conn->query('SELECT string FROM swears');
-            while($i=$stmt->fetch_assoc()){
-                if(!$cont)
-                    continue;
-                //todo: zlepsit validaci
-                if(preg_match('/'.$i['string'].'/i',$comment)){
-                    echo "<b>Error: cannot contain swears.</b>";
-                    $cont=false;
-                }
+            if(containsSwears($comment)){
+                $cont=false;
+                errorBox("Error: cannot contain swears!");
             }
 
             if($cont){

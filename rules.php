@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rules :: kotori</title>
+    <?php 
+    require 'comm.php';
+    favicon(); 
+    ?>
     <style>
         textarea[name=legal]{
             height:70vh;
@@ -12,7 +16,6 @@
 </head>
 <body>
 <?php 
-require 'comm.php';
 head();    
 ?>
 <main>

@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>swears :: kotori</title>
+    <?php 
+    require 'comm.php';
+    favicon(); 
+    ?>
 </head>
 <body>
     <?php 
-        require 'comm.php';
         head();
     ?>
     <main>

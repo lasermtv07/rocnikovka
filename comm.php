@@ -16,6 +16,14 @@
             }
             return $conn;
     }
+    function favicon(){
+        //nastav favicon
+        if(isset($_COOKIE["light"]))
+            echo "<link rel=icon href=ico/favicon-light.png />";
+        else
+            echo "<link rel=icon href=ico/favicon-dark.png type=ímage/x-icon />";
+
+}
     function isAdmin($id){
         try {
             $conn=connect();
@@ -157,7 +165,17 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
         $conn=connect();
         //cookie pro pagovani
         //TODO: fix cookie u hledani
-        $pageId=(is_null($_GET["user"]))?(($changeFeed?"Fol":"")):$_GET["user"];
+        $pageId="";
+        if(!is_null($_GET["user"]))
+            $pageId=$_GET["user"];
+        elseif($changeFeed)
+            $pageId="Fol";
+        elseif(str_contains($_SERVER['REQUEST_URI'],"search"))
+            $pageId="Search";
+        else
+            $pageId="";
+        
+        //$pageId=(is_null($_GET["user"]))?(($changeFeed?"Fol":"")):$_GET["user"];
         if(!isset($_COOKIE["page".$pageId]))
             setcookie("page".$pageId,"1",time()+3600);
 
@@ -324,5 +342,16 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
                     <b>$string</b>
                 </div><br>
                 EOF;
+    }
+
+    function containsSwears($string){
+        $conn=connect();
+        $stmt=$conn->query('select string from swears');
+            while($i=$stmt->fetch_assoc()){
+                //todo: zlepsit validaci
+                if(preg_match('/'.$i['string'].'/i',$string)){
+                    return true;
+                }
+            }
     }
 ?>

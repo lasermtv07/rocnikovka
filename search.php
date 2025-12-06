@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>search :: kotori</title>
+    <?php 
+    require 'comm.php';
+    favicon(); 
+    ?>
     <style>
         #search {
             width: calc( 100% - 75px );
@@ -30,7 +34,6 @@
 </head>
 <body>
 <?php
-require 'comm.php';
 head();
 $conn=connect();
 ?>
@@ -39,7 +42,7 @@ $conn=connect();
     <form method=GET>
         <input type=text name=search id=search
         value="<?php echo $_GET["search"];?>"
-        /> <input type=submit value="Search" />
+        /> <input type=submit name=s value="Search" />
         <input type=hidden name="<?php echo isset($_GET["tweet"])?"tweet":"prof";?>" />
     </form>
 
@@ -49,7 +52,7 @@ $conn=connect();
 $baseUrl=parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
 $query=urlencode($_GET["search"]);
 $text1="<a href=\"$baseUrl?search=$query\" >Profiles</a>";
-$text2="<a href=\"$baseUrl?search=$query&tweet\" >Posts</a>";
+$text2="<a id=postsBtn href=\"$baseUrl?search=$query&tweet\" >Posts</a>";
 if(isset($_GET["tweet"])){
     echo "<span>$text1</span>";
     echo "<span><u><b>$text2</b></u></span>";
@@ -90,6 +93,13 @@ else {
 }
 foot();
 ?>
+<script>
+//resetuje cookie
+document.getElementById("postsBtn").onclick=()=>{
+    let time=Date.now();
+    document.cookie = `pageSearch=1; expires=${time}`;
+}
+</script>
 </main>
 </body>
 </html>

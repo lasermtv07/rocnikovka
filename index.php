@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>home :: kotori</title>
     <link rel=stylesheet href=css/home.css />
+        <?php 
+    require 'comm.php';
+    favicon(); 
+    ?>
 </head>
 <body>
     <?php
-        require 'comm.php';
+        
         head();
         session_start();
         $conn=connect();
@@ -93,15 +97,9 @@ echo "<img src=\"$pic\" id=profTweet width=40 height=40 />";
                 errorBox("<b>Error: post cannot be longer than 256 characters!</b>");
                 $cont=false;
             }
-            $stmt=$conn->query('select string from swears');
-            while($i=$stmt->fetch_assoc()){
-                if(!$cont)
-                    continue;
-                //todo: zlepsit validaci
-                if(preg_match('/'.$i['string'].'/i',$tweet)){
-                    errorBox( "<b>error: cannot contain swears.</b>");
-                    $cont=false;
-                }
+            if(containsSwears($tweet)){
+                errorBox("Error: post cannot contain swears!");
+                $cont=false;
             }
 
             $file=$_FILES["image"];

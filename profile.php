@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="css/profile.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>profile :: kotori</title>
+    <?php 
+    favicon(); 
+    ?>
 </head>
 <body>
     <?php 

@@ -3,6 +3,10 @@
     <head>
         <meta charset=UTF-8 />
         <title>register :: kotori</title>
+    <?php 
+    require 'comm.php';
+    favicon(); 
+    ?>
         <style>
             .warn {
                 font-weight: bold;
@@ -12,7 +16,6 @@
     </head>
     <body>
         <?php 
-            require 'comm.php';
             head();
             $nick="";
             $pass="";
