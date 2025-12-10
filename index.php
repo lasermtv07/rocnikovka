@@ -71,12 +71,7 @@ echo "<img src=\"$pic\" id=profTweet width=40 height=40 />";
 ?>
             <textarea name=tweet placeholder="Got anything to say?"></textarea><br>
             <input type=submit name=s value="Send" id=tweetSend /> <input type=file name="image" /><br />
-            <?php 
-                if(isAdmin($_SESSION['id'])){
-                    echo "<a href=swears.php >Change swears</a>";
-                    echo " <a style=padding-left:50px href=suspensions.php >Suspend/delete users</a>";
-                }
-            ?>
+
         </form>
     <?php 
 

@@ -40,9 +40,19 @@
     </form>
 <?php 
 if(isset($_POST["s"])){
+    $cont=true;
     $nick=htmlspecialchars($_POST["nick"]);
     $desc=htmlspecialchars($_POST["desc"]);
-    $cont=true;
+
+    //validuj sprosta slova
+    if(containsSwears($nick)){
+        errorBox("Error: nick cannot contain swears!");
+        $cont=false;
+    }
+    if(containsSwears($desc)){
+        errorBox("Error: description cannot contain swears!");
+        $cont=false;
+    }
     
     //validuj prazdnej nick
     if(strlen($nick)==0 || $nick==""){

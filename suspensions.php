@@ -21,15 +21,45 @@
         td,th {
             padding:2px 10px;
         }
+        #statWrap {
+            display:flex;
+            justify-content: space-between;
+        }
+        .stat {
+            display:inline-block;
+        }
     </style>
 
 </head>
 <body>
-    <?php head();?>
+    <?php
+    head();
+    $conn=connect();
+    ?>
     <main>
     <h1>suspensions</h1>
     <p><b>Suspension</b> forbids the user from signing back in. Posts are still saved.<br>
     <b>Deletion</b> permanently removes the account and any activities associated with it, including tweets, likes and follows.</p>
+    <hr />
+    <h2>statistics</h2>
+    <div id=statWrap >
+    <?php
+    function printAsTable($desc,$val){
+        echo "<table class=stat><thead><th>$desc</th></thead>";
+        echo "<tr><td>$val</td></tr></table>";
+    }
+    $tweetsTotal=$conn->query('SELECT COUNT(text) FROM tweets')->fetch_assoc()['COUNT(text)'];
+    $accountsTotal=$conn->query('SELECT COUNT(*) FROM accounts')->fetch_assoc()['COUNT(*)'];
+    $accountsSuspended=$conn->query('SELECT COUNT(*) FROM accounts WHERE suspension=1')->fetch_assoc()['COUNT(*)'];
+    $mostFollowedId=$conn->query('SELECT  followedID,   COUNT(followedID) AS `value_occurrence`   FROM   follows  GROUP BY followedID  ORDER BY    `value_occurrence` DESC  LIMIT 1;')->fetch_assoc()['followedID'];
+    $mostFollowed=$conn->query("SELECT username from accounts where id=$mostFollowedId")->fetch_assoc()['username'];
+
+    printAsTable("Total tweets",$tweetsTotal);
+    printAsTable("Total accounts",$accountsTotal);
+    printAsTable("Suspended accounts",$accountsSuspended);
+    printAsTable("Most followed",$mostFollowed);
+    ?>
+    </div>
     <hr />
     <?php 
         if(!isAdmin($_SESSION["id"])){
@@ -46,7 +76,6 @@
             header('location: '.explode("?",$_SERVER["REQUEST_URI"])[0]);
         }
 
-        $conn=connect();
         //listuj uzivatele
         echo "<table>";
         echo "<thead><th>a</th><th>Nick</th><th>Email</th><th>Birth Date</th><th>Gender</th><th>Suspend</th><th>Delete</th></thead>\n";

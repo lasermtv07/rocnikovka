@@ -85,6 +85,10 @@
             $out_url=str_replace("&change","",$out_url);
             header('location:'.$out_url);
         }
+        if(isAdmin($_SESSION["id"])){
+            echo "<h2><a href=swears.php >Change swears</a></h2>";
+            echo "<h2><a href=suspensions.php >Delete Users</a></h2>";
+        }
         echo "</center></div>";
 
         //odhlas suspended/zabanovane uzivatele
