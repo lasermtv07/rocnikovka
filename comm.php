@@ -109,8 +109,9 @@ function printOneTweet($id,$authorID,$username,$text,$postTime,$picture,$quote,$
             echo "<div class=tweetLink2><img src=$pfp style=display:inline-block; width=50 height=50 /></div> &nbsp;";
             echo "<span class=tweetLink1><b><a href=profile.php?user=".$authorID." >".$username."</a></b> - $postTime</span>";
             //mazani
+            $bin=file_get_contents("ico/bin.svg");
             if(isAdmin($_SESSION["id"]) || $_SESSION["id"]==$authorID)
-                echo "<a style=color:red;float:right href=delete.php?id=".$id.">Delete</a>";
+                echo "<a style=color:red;float:right href=delete.php?id=".$id.">".$bin."</a>";
             echo "<p class=postText >".$text."</p>";
             //obrazek
             if($picture)

@@ -69,22 +69,7 @@ main h1 {
     color:var(--red) !important;
 }
 
-@media only screen and (max-width: 900px) {
-    main {
-        width: 95%;
-        margin: 0 !important;
-        border-right: none;
-        border-left: none;
-    }
-    #head {
-        width: 100%;
-        display: block;
-        margin-bottom: 20px;
-    }
-    body {
-        background-color: var(--bg);
-    }
-}
+
 
 #repost {
     width:2em !important;
@@ -199,5 +184,31 @@ button:hover,input[type=submit]:hover,input[type=file]::file-selector-button:hov
     position: relative;
     left:-10px;
     width: calc( 100% + 19px );
+}
 
+#bin {
+    width:1.5em !important;
+}
+#bin *{
+    stroke: var(--fg) !important;
+}
+#bin:hover *{
+    stroke: var(--light-red) !important;
+}
+
+@media only screen and (max-width: 900px) {
+    main {
+        width: 95%;
+        margin: 0 !important;
+        border-right: none;
+        border-left: none;
+    }
+    #head {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+    }
+    body {
+        background-color: var(--bg);
+    }
 }
